@@ -2,12 +2,14 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import Container from "./Container";
 
 export default function Hero() {
   return (
     <section
       id="vision"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
+      className="relative min-h-screen overflow-hidden bg-black"
     >
       {/* Animated Background */}
       <motion.div
@@ -18,172 +20,208 @@ export default function Hero() {
           repeat: Infinity,
           repeatType: "reverse",
         }}
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: "url('/kingdom-bg.jpg')",
-        }}
-      />
+        className="absolute inset-0"
+      >
+        <Image
+          src="/kingdom-bg.jpg"
+          alt="Kingdom Background"
+          fill
+          priority
+          className="object-cover"
+        />
+      </motion.div>
 
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/70" />
+      <div className="absolute inset-0 bg-black/75" />
 
       {/* Golden Glow */}
       <motion.div
         animate={{
           scale: [1, 1.15, 1],
-          opacity: [0.35, 0.6, 0.35],
+          opacity: [0.25, 0.45, 0.25],
         }}
         transition={{
           duration: 5,
           repeat: Infinity,
         }}
-        className="absolute w-125 h-125 rounded-full bg-yellow-500/20 blur-[120px]"
+        className="
+          absolute
+          left-1/2
+          top-1/2
+          h-85
+          w-85
+          -translate-x-1/2
+          -translate-y-1/2
+          rounded-full
+          bg-yellow-500/20
+          blur-[140px]
+        "
       />
 
-      {/* Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 60 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2 }}
-        className="
-relative
-z-10
-text-center
-px-6
-flex
-flex-col
-items-center
-pt-24
-md:pt-28
-"
-      >
-        {/* Logo */}
+      {/* Main Content */}
+      <div className="relative z-10 flex min-h-screen items-center justify-center">
+  <Container>
+
         <motion.div
-  animate={{
-    scale: [0.95, 1.08, 1],
-    rotate: [0, 1, -1, 0],
-  }}
-  transition={{
-    duration: 4,
-    repeat: Infinity,
-    ease: "easeInOut",
-  }}
-  className="flex justify-center"
->
-  <Image
-    src="/curved-kingdom-logo.png"
-    width={200}
-    height={200}
-    alt="Curved Kingdom Logo"
-    className="mx-auto"
-  />
-</motion.div>
-       
-
-        {/* Welcome */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="mt-8 uppercase tracking-[8px] text-yellow-400 text-sm md:text-base"
-        >
-          Welcome To
-        </motion.p>
-
-        {/* Title */}
-        <motion.h1
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="mt-4 text-5xl md:text-7xl font-black text-white leading-tight"
+          transition={{ duration: 1 }}
+          className="mx-auto flex w-full max-w-4xl flex-col items-center text-center"
         >
-          CURVED
-          <br />
-          <span className="text-yellow-400">KINGDOM</span>
-        </motion.h1>
-
-        {/* Subtitle */}
-        <motion.h2
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9 }}
-          className="mt-8 text-2xl md:text-3xl font-semibold text-yellow-300"
-        >
-          The Future Belongs To Those Who Build It
-        </motion.h2>
-
-        {/* Description */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="mt-8 max-w-3xl mx-auto text-lg md:text-xl text-gray-300 leading-8"
-        >
-          Curved Kingdom is more than a social platform.
-          <br />
-          It is a digital ecosystem where every citizen builds an identity,
-          creates meaningful connections, shares ideas, discovers
-          opportunities, and leaves a legacy that inspires generations.
-        </motion.p>
-
-        {/* Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5 }}
-          className="mt-12 flex flex-wrap justify-center gap-5"
-        >
-          <button
-            className="
-              bg-yellow-500
-              hover:bg-yellow-400
-              text-black
-              px-10
-              py-4
-              rounded-full
-              font-bold
-              transition
-              shadow-[0_0_30px_rgba(255,200,0,0.45)]
-            "
+          {/* Logo */}
+          <motion.div
+            animate={{
+              y: [0, -10, 0],
+              scale: [1, 1.04, 1],
+              rotate: [0, 1, -1, 0],
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="relative"
           >
-            Enter The Kingdom
-          </button>
+            <div className="absolute inset-0 rounded-full bg-yellow-500/20 blur-3xl" />
 
-          <button
-            className="
-              border-2
-              border-yellow-500
-              hover:bg-yellow-500
-              hover:text-black
-              text-yellow-400
-              px-10
-              py-4
-              rounded-full
-              transition
-            "
+            <Image
+              src="/curved-kingdom-logo.png"
+              alt="Curved Kingdom Logo"
+              width={180}
+              height={180}
+              priority
+              className="relative z-10"
+            />
+          </motion.div>
+
+          {/* Welcome */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="mt-8 text-xs uppercase tracking-[8px] text-yellow-400"
           >
-            Discover The Vision
-          </button>
-        </motion.div>
+            Welcome To
+          </motion.p>
 
-        {/* Scroll Indicator */}
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{
-            duration: 1.8,
-            repeat: Infinity,
-          }}
-          className="mt-20 text-yellow-400"
-        >
-          <p className="text-sm tracking-[5px] uppercase">
-            Scroll To Explore
-          </p>
+          {/* Title */}
+          <motion.h1
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="mt-4 text-5xl font-black leading-none text-white sm:text-6xl"
+          >
+            CURVED
+            <br />
+            <span className="text-yellow-400">
+              KINGDOM
+            </span>
+          </motion.h1>
 
-          <div className="text-3xl mt-3">
-            ↓
-          </div>
+          {/* Subtitle */}
+          <motion.h2
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="mt-6 text-xl font-semibold text-yellow-200"
+          >
+            The Future Belongs To Those Who Build It
+          </motion.h2>
+
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1 }}
+            className="mt-6 max-w-md text-base leading-8 text-gray-300"
+          >
+            Curved Kingdom is more than a social platform.
+            It is a digital ecosystem where every citizen builds an
+            identity, creates meaningful connections, discovers
+            opportunities, and leaves a legacy that inspires generations.
+          </motion.p>
+
+          {/* Action Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2 }}
+            className="mt-10 flex w-full flex-col gap-4"
+          >
+            <button
+              className="
+                rounded-full
+                bg-yellow-500
+                py-4
+                text-lg
+                font-bold
+                text-black
+                transition
+                hover:scale-105
+                hover:bg-yellow-400
+                shadow-[0_0_30px_rgba(255,200,0,0.45)]
+              "
+            >
+              Enter The Kingdom
+            </button>
+
+            <button
+              className="
+                rounded-full
+                border
+                border-yellow-500
+                py-4
+                text-lg
+                font-semibold
+                text-yellow-400
+                transition
+                hover:bg-yellow-500
+                hover:text-black
+              "
+            >
+              Discover The Vision
+            </button>
+          </motion.div>
+                    {/* Scroll Indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+              y: [0, 10, 0],
+            }}
+            transition={{
+              delay: 1.8,
+              duration: 2,
+              repeat: Infinity,
+            }}
+            className="mt-16 flex flex-col items-center"
+          >
+            <p className="mb-3 text-xs uppercase tracking-[6px] text-yellow-400">
+              Scroll To Explore
+            </p>
+
+            <div className="flex h-14 w-8 justify-center rounded-full border-2 border-yellow-500">
+              <motion.div
+                animate={{
+                  y: [4, 20, 4],
+                }}
+                transition={{
+                  duration: 1.6,
+                  repeat: Infinity,
+                }}
+                className="mt-1 h-3 w-3 rounded-full bg-yellow-400"
+              />
+            </div>
+
+            <ChevronDown
+              size={22}
+              className="mt-4 text-yellow-400"
+            />
+          </motion.div>
+
         </motion.div>
-      </motion.div>
-    </section>
+            </Container>
+    </div>
+  </section>
   );
 }

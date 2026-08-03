@@ -1,234 +1,310 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { motion } from "framer-motion";
+import { Menu, X, Crown } from "lucide-react";
+
+const navItems = [
+  { label: "Vision", href: "#vision" },
+  { label: "Foundations", href: "#features" },
+  { label: "Royal Journey", href: "#roadmap" },
+  { label: "Community", href: "#community" },
+];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState("#vision");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <motion.nav
-      initial={{ y: -60, opacity: 0 }}
+      initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="
+      className={`
         fixed
         top-0
         left-0
         w-full
         z-50
-        bg-black/70
-        backdrop-blur-xl
+        transition-all
+        duration-500
+        backdrop-blur-2xl
         border-b
-        border-yellow-500/20
-        shadow-[0_8px_30px_rgba(0,0,0,0.45)]
-      "
+        ${
+          scrolled
+            ? "bg-black/90 border-yellow-500/30 shadow-[0_10px_40px_rgba(0,0,0,0.75)]"
+            : "bg-black/55 border-yellow-500/15"
+        }
+      `}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
 
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3">
+
+        <Link href="/" className="flex items-center gap-4">
 
           <motion.div
+            whileHover={{
+              rotate: 5,
+              scale: 1.08,
+            }}
             animate={{
               y: [0, -2, 0],
             }}
             transition={{
               duration: 3,
               repeat: Infinity,
-              ease: "easeInOut",
             }}
+            className="relative"
           >
+
+            <div className="absolute inset-0 rounded-full bg-yellow-500/20 blur-xl" />
+
             <Image
               src="/curved-kingdom-logo.png"
               alt="Curved Kingdom"
-              width={55}
-              height={55}
-              className="drop-shadow-[0_0_20px_rgba(255,215,0,0.7)]"
+              width={58}
+              height={58}
+              className="relative"
             />
+
           </motion.div>
 
           <div>
 
-            <h1 className="text-yellow-400 text-xl font-bold">
+            <h1 className="text-xl font-bold text-yellow-400">
               Curved Kingdom
             </h1>
 
-            <p className="text-xs text-gray-400 tracking-[0.3em]">
-              DIGITAL ECOSYSTEM
+            <p className="text-[11px] uppercase tracking-[4px] text-gray-500">
+              Digital Civilization
             </p>
 
           </div>
 
         </Link>
+                {/* Desktop Navigation */}
 
-        {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-10 text-white">
+        <div className="hidden items-center gap-10 lg:flex">
 
-          <a
-            href="#vision"
-            className="
-              transition-all
-              duration-300
-              hover:text-yellow-400
-              hover:-translate-y-1
-              hover:drop-shadow-[0_0_12px_rgba(255,215,0,0.8)]
-            "
-          >
-            Vision
-          </a>
+          {navItems.map((item) => (
 
-          <a
-            href="#features"
-            className="
-              transition-all
-              duration-300
-              hover:text-yellow-400
-              hover:-translate-y-1
-              hover:drop-shadow-[0_0_12px_rgba(255,215,0,0.8)]
-            "
-          >
-            Foundations
-          </a>
+            <a
+              key={item.href}
+              href={item.href}
+              onClick={() => setActive(item.href)}
+              className="
+                group
+                relative
+                flex
+                items-center
+                gap-2
+                py-2
+                text-sm
+                font-medium
+                text-gray-300
+                transition-all
+                duration-300
+                hover:text-yellow-400
+              "
+            >
 
-          <a
-            href="#roadmap"
-            className="
-              transition-all
-              duration-300
-              hover:text-yellow-400
-              hover:-translate-y-1
-              hover:drop-shadow-[0_0_12px_rgba(255,215,0,0.8)]
-            "
-          >
-            Royal Journey
-          </a>
+              {/* Active Crown */}
 
-          <a
-            href="#community"
-            className="
-              transition-all
-              duration-300
-              hover:text-yellow-400
-              hover:-translate-y-1
-              hover:drop-shadow-[0_0_12px_rgba(255,215,0,0.8)]
-            "
-          >
-            Community
-          </a>
+              {active === item.href && (
+
+                <motion.div
+                  layoutId="active-crown"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="text-yellow-400"
+                >
+                  <Crown size={14} />
+                </motion.div>
+
+              )}
+
+              <span>{item.label}</span>
+
+              {/* Animated Underline */}
+
+              {active === item.href && (
+
+                <motion.div
+                  layoutId="navbar-indicator"
+                  className="
+                    absolute
+                    -bottom-4.5
+                    left-0
+                    h-0.75
+                    w-full
+                    rounded-full
+                    bg-yellow-400
+                    shadow-[0_0_12px_rgba(250,204,21,0.9)]
+                  "
+                />
+
+              )}
+
+            </a>
+
+          ))}
 
         </div>
 
         {/* Desktop Button */}
+
         <div className="hidden lg:block">
 
           <Link href="/register">
 
-            <button
+            <motion.button
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 0 30px rgba(250,204,21,0.45)",
+              }}
+              whileTap={{ scale: 0.96 }}
               className="
-                bg-yellow-500
-                text-black
-                px-6
-                py-3
                 rounded-full
-                font-bold
+                border
+                border-yellow-400
+                bg-linear-to-r
+                from-yellow-400
+                to-yellow-500
+                px-7
+                py-3
+                font-semibold
+                text-black
                 transition-all
-                duration-300
-                hover:bg-yellow-400
-                hover:scale-105
-                hover:shadow-[0_0_35px_rgba(255,215,0,0.7)]
-                active:scale-95
               "
             >
               Become a Citizen
-            </button>
+            </motion.button>
 
           </Link>
 
         </div>
 
         {/* Mobile Menu Button */}
+
         <button
-          className="lg:hidden text-yellow-400"
           onClick={() => setOpen(!open)}
+          className="
+            rounded-xl
+            border
+            border-yellow-500/30
+            bg-yellow-500/10
+            p-2
+            text-yellow-400
+            transition
+            hover:bg-yellow-500/20
+            lg:hidden
+          "
         >
-          {open ? <X size={32} /> : <Menu size={32} />}
+          {open ? <X size={28} /> : <Menu size={28} />}
         </button>
 
       </div>
+            {/* Mobile Menu */}
 
-      {/* Mobile Menu */}
       {open && (
 
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          exit={{ opacity: 0, y: -25 }}
+          transition={{ duration: 0.35 }}
           className="
-            lg:hidden
-            bg-black/95
-            backdrop-blur-xl
             border-t
             border-yellow-500/20
+            bg-black/95
+            backdrop-blur-2xl
+            lg:hidden
           "
         >
 
-          <div className="flex flex-col px-6 py-8 gap-6 text-white">
+          <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-8">
 
-            <a
-              href="#vision"
-              onClick={() => setOpen(false)}
-              className="transition hover:text-yellow-400"
-            >
-              Vision
-            </a>
+            {navItems.map((item) => (
 
-            <a
-              href="#features"
-              onClick={() => setOpen(false)}
-              className="transition hover:text-yellow-400"
-            >
-              Foundations
-            </a>
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => {
+                  setActive(item.href);
+                  setOpen(false);
+                }}
+                className={`
+                  flex
+                  items-center
+                  gap-3
+                  rounded-2xl
+                  px-5
+                  py-4
+                  text-base
+                  font-medium
+                  transition-all
+                  duration-300
+                  ${
+                    active === item.href
+                      ? "bg-yellow-500/10 text-yellow-400 border border-yellow-500/30"
+                      : "text-gray-300 hover:bg-white/5 hover:text-yellow-400"
+                  }
+                `}
+              >
 
-            <a
-              href="#roadmap"
-              onClick={() => setOpen(false)}
-              className="transition hover:text-yellow-400"
-            >
-              Royal Journey
-            </a>
+                {active === item.href && (
+                  <Crown size={18} />
+                )}
 
-            <a
-              href="#community"
-              onClick={() => setOpen(false)}
-              className="transition hover:text-yellow-400"
-            >
-              Community
-            </a>
+                <span>{item.label}</span>
+
+              </a>
+
+            ))}
 
             <Link
               href="/register"
               onClick={() => setOpen(false)}
+              className="mt-4"
             >
-              <button
+
+              <motion.button
+                whileHover={{
+                  scale: 1.03,
+                }}
+                whileTap={{
+                  scale: 0.97,
+                }}
                 className="
                   w-full
-                  bg-yellow-500
-                  text-black
-                  py-3
                   rounded-full
+                  bg-linear-to-r
+                  from-yellow-400
+                  to-yellow-500
+                  py-4
                   font-bold
-                  transition-all
-                  duration-300
-                  hover:bg-yellow-400
+                  text-black
+                  shadow-[0_0_25px_rgba(250,204,21,0.35)]
                 "
               >
                 Become a Citizen
-              </button>
+              </motion.button>
+
             </Link>
 
           </div>

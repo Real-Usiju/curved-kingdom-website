@@ -1,141 +1,249 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Crown, Users, Globe2 } from "lucide-react";
 import Link from "next/link";
-
-const values = [
-  {
-    icon: Crown,
-    title: "One Kingdom",
-    description:
-      "Every citizen belongs to one united digital civilization built on respect, purpose, and shared progress.",
-  },
-  {
-    icon: Users,
-    title: "Growing Community",
-    description:
-      "Together we create meaningful relationships, inspire innovation, and support one another's journey.",
-  },
-  {
-    icon: Globe2,
-    title: "Global Vision",
-    description:
-      "Curved Kingdom is designed for citizens across the world, creating opportunities without borders.",
-  },
-];
+import { motion } from "framer-motion";
+import {
+  Crown,
+  ShieldCheck,
+  Users,
+  Sparkles,
+} from "lucide-react";
 
 export default function Community() {
   return (
     <section
       id="community"
-      className="relative overflow-hidden bg-[#040404] py-32"
+      className="relative overflow-hidden bg-[#050505] py-28"
     >
-      {/* Golden Glow */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="h-125 w-125 rounded-full bg-yellow-500/10 blur-[180px]" />
+
+      {/* Background Glow */}
+
+      <div className="absolute inset-0 overflow-hidden">
+
+        <motion.div
+          animate={{
+            scale: [1, 1.15, 1],
+            opacity: [0.06, 0.15, 0.06],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+          }}
+          className="
+            absolute
+            left-1/2
+            top-1/2
+            h-175
+            w-175
+            -translate-x-1/2
+            -translate-y-1/2
+            rounded-full
+            bg-yellow-500
+            blur-[220px]
+          "
+        />
+
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6">
 
-        {/* Heading */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
           className="text-center"
         >
+
           <p className="uppercase tracking-[8px] text-yellow-400">
-            Our Community
+            Join The Kingdom
           </p>
 
-          <h2 className="mt-5 text-4xl md:text-6xl font-black text-white">
-            Together We Build
-            <br />
-            <span className="text-yellow-400">
-              The Kingdom
-            </span>
+          <h2 className="mt-6 text-4xl font-black text-white md:text-6xl">
+            Become A Founding Citizen
           </h2>
 
-          <p className="mx-auto mt-8 max-w-3xl text-lg leading-8 text-gray-300">
-            Curved Kingdom is built by citizens who believe that technology
-            should bring people together, encourage creativity, and create
-            opportunities for generations to come.
+          <p className="mx-auto mt-8 max-w-3xl text-lg leading-9 text-gray-400">
+            Every great kingdom begins with its first citizens.
+            Join Curved Kingdom today and help shape a digital civilization
+            built on purpose, innovation and legacy.
           </p>
+
         </motion.div>
 
-        {/* Cards */}
-        <div className="mt-20 grid gap-8 md:grid-cols-3">
+        <div className="mt-20 grid gap-8 lg:grid-cols-3">
+                   {/* Royal Identity Card */}
 
-          {values.map((item, index) => {
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            whileHover={{ y: -10 }}
+            className="rounded-3xl border border-yellow-500/20 bg-white/5 p-8 backdrop-blur-xl"
+          >
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-yellow-500/10">
+              <Crown size={32} className="text-yellow-400" />
+            </div>
 
-            const Icon = item.icon;
+            <h3 className="mt-8 text-2xl font-bold text-white">
+              Royal Identity
+            </h3>
 
-            return (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.6,
-                  delay: index * 0.15,
-                }}
-                whileHover={{
-                  y: -10,
-                  scale: 1.03,
-                }}
-                className="
-                  group
-                  rounded-3xl
-                  border
-                  border-yellow-500/20
-                  bg-white/5
-                  backdrop-blur-xl
-                  p-8
-                  text-center
-                  transition-all
-                  hover:border-yellow-400
-                  hover:shadow-[0_0_35px_rgba(255,200,0,0.25)]
-                "
-              >
-                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-yellow-500/10 group-hover:bg-yellow-500/20 transition">
-                  <Icon
-                    size={40}
-                    className="text-yellow-400 transition-transform duration-300 group-hover:scale-110"
-                  />
-                </div>
+            <p className="mt-5 leading-8 text-gray-400">
+              Create a unique identity that represents your purpose,
+              achievements and journey inside Curved Kingdom.
+            </p>
+          </motion.div>
 
-                <h3 className="mt-8 text-2xl font-bold text-white">
-                  {item.title}
-                </h3>
+          {/* Trusted Kingdom Card */}
 
-                <p className="mt-5 leading-7 text-gray-400">
-                  {item.description}
-                </p>
-              </motion.div>
-            );
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{
+              duration: 0.6,
+              delay: 0.15,
+            }}
+            whileHover={{ y: -10 }}
+            className="rounded-3xl border border-yellow-500/20 bg-white/5 p-8 backdrop-blur-xl"
+          >
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-yellow-500/10">
+              <ShieldCheck
+                size={32}
+                className="text-yellow-400"
+              />
+            </div>
 
-          })}
+            <h3 className="mt-8 text-2xl font-bold text-white">
+              Trusted Community
+            </h3>
 
-        </div>
+            <p className="mt-5 leading-8 text-gray-400">
+              Become part of a growing community where collaboration,
+              respect and innovation shape the future.
+            </p>
+          </motion.div>
 
-        {/* CTA */}
+          {/* Legacy Card */}
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{
+              duration: 0.6,
+              delay: 0.3,
+            }}
+            whileHover={{ y: -10 }}
+            className="rounded-3xl border border-yellow-500/20 bg-white/5 p-8 backdrop-blur-xl"
+          >
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-yellow-500/10">
+              <Sparkles
+                size={32}
+                className="text-yellow-400"
+              />
+            </div>
+
+            <h3 className="mt-8 text-2xl font-bold text-white">
+              Leave A Legacy
+            </h3>
+
+            <p className="mt-5 leading-8 text-gray-400">
+              Every contribution becomes part of the Kingdom's history,
+              inspiring future generations of citizens.
+            </p>
+          </motion.div> 
+                  </div>
+
+        {/* Call To Action */}
+
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="mt-20 text-center"
+          transition={{ duration: 0.8 }}
+          className="mt-24 text-center"
         >
-          <Link href="/register">
-            <button className="rounded-full bg-yellow-500 px-10 py-4 font-bold text-black transition hover:bg-yellow-400 shadow-[0_0_30px_rgba(255,200,0,0.35)]">
-              Join the Community
-            </button>
-          </Link>
+
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: 140 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mx-auto h-0.5 bg-yellow-500"
+          />
+
+          <h3 className="mt-10 text-3xl font-black text-white md:text-5xl">
+            The Kingdom Awaits You
+          </h3>
+
+          <p className="mx-auto mt-8 max-w-3xl text-lg leading-9 text-gray-400">
+            Your journey begins today. Become one of the founding citizens
+            of Curved Kingdom and help build a digital civilization where
+            identity, innovation, purpose and legacy come together.
+          </p>
+
+          <div className="mt-12 flex flex-col items-center justify-center gap-5 sm:flex-row">
+
+            <Link href="/register">
+
+              <motion.button
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 0 30px rgba(255,200,0,0.45)",
+                }}
+                whileTap={{ scale: 0.96 }}
+                className="
+                  rounded-full
+                  bg-yellow-500
+                  px-10
+                  py-4
+                  font-bold
+                  text-black
+                  transition
+                  hover:bg-yellow-400
+                "
+              >
+                Become A Founding Citizen
+              </motion.button>
+
+            </Link>
+
+            <Link href="/login">
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.96 }}
+                className="
+                  rounded-full
+                  border
+                  border-yellow-500
+                  px-10
+                  py-4
+                  font-bold
+                  text-yellow-400
+                  transition
+                  hover:bg-yellow-500
+                  hover:text-black
+                "
+              >
+                Return To The Kingdom
+              </motion.button>
+
+            </Link>
+
+          </div>
+
+          <p className="mt-8 text-sm uppercase tracking-[5px] text-yellow-400/80">
+            Together We Build The Future
+          </p>
+
         </motion.div>
 
       </div>
+
     </section>
   );
 }
