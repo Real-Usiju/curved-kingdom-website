@@ -125,33 +125,45 @@ export default function Footer() {
 
             <div className="mt-6 flex flex-col gap-4">
 
-              <a
-                href="#vision"
-                className="text-gray-400 transition hover:text-yellow-400"
-              >
-                Vision
-              </a>
+  <a
+    href="#vision"
+    className="text-gray-400 transition hover:text-yellow-400"
+  >
+    Vision
+  </a>
 
-              <a
-                href="#features"
-                className="text-gray-400 transition hover:text-yellow-400"
-              >
-                Foundations
-              </a>
+  <a
+    href="#features"
+    className="text-gray-400 transition hover:text-yellow-400"
+  >
+    Foundations
+  </a>
 
-              <a
-                href="#roadmap"
-                className="text-gray-400 transition hover:text-yellow-400"
-              >
-                Royal Journey
-              </a>
+  <a
+    href="#roadmap"
+    className="text-gray-400 transition hover:text-yellow-400"
+  >
+    Royal Journey
+  </a>
 
-              <a
-                href="#community"
-                className="text-gray-400 transition hover:text-yellow-400"
-              >
-                Community
-              </a>
+  <a
+    href="#community"
+    className="text-gray-400 transition hover:text-yellow-400"
+  >
+    Community
+  </a>
+
+  <Link
+    href="/register"
+    className="font-semibold text-yellow-400 transition hover:text-yellow-300"
+  >
+    Become A Founding Citizen
+  </Link>
+
+  
+
+
+              
 
               <Link
                 href="/register"
@@ -309,6 +321,34 @@ export default function Footer() {
                 © {new Date().getFullYear()} Curved Kingdom.
                 All Rights Reserved.
               </p>
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-sm md:justify-start">
+
+  <Link
+    href="/privacy"
+    className="text-gray-500 transition hover:text-yellow-400"
+  >
+    Privacy Policy
+  </Link>
+
+  <span className="text-gray-600">•</span>
+
+  <Link
+    href="/terms"
+    className="text-gray-500 transition hover:text-yellow-400"
+  >
+    Terms of Service
+  </Link>
+
+  <span className="text-gray-600">•</span>
+
+  <Link
+    href="/contact"
+    className="text-gray-500 transition hover:text-yellow-400"
+  >
+    Contact
+  </Link>
+
+</div>
 
             </div>
 
