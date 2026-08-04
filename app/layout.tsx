@@ -88,6 +88,9 @@ export const metadata: Metadata = {
 
     images: ["/curved-kingdom-logo.png"],
   },
+   verification: {
+  google: "C_LzPyFg__CkhXXB9dAMt6eilWI9_qOdbTKfLVbR1W4",
+},
 
   icons: {
     icon: "/curved-kingdom-logo.png",
