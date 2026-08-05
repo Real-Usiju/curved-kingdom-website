@@ -16,6 +16,8 @@ import {
   FaInstagram,
   FaTiktok,
   FaYoutube,
+  FaLinkedinIn,
+  FaTelegramPlane,
 } from "react-icons/fa";
 
 export default function Footer() {
@@ -51,17 +53,17 @@ export default function Footer() {
 
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-6 py-24">
+      <div className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
 
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: 180 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mx-auto h-0.5 bg-yellow-500"
+          className="mx-auto h-0.5 w-28 bg-yellow-500 sm:w-44"
         />
 
-        <div className="mt-16 grid gap-8 lg:grid-cols-4">
+        <div className="mt-12 grid gap-6 sm:mt-16 sm:gap-8 md:grid-cols-2 xl:grid-cols-4">
 
           {/* Brand */}
 
@@ -70,7 +72,19 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="rounded-3xl border border-yellow-500/20 bg-white/5 p-8 backdrop-blur-xl"
+            className="
+  rounded-3xl
+  border
+  border-yellow-500/20
+  bg-white/5
+  p-6
+  backdrop-blur-xl
+  transition-all
+  duration-300
+  hover:border-yellow-400/50
+  hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
+  sm:p-8
+"
           >
 
             <div className="flex items-center gap-4">
@@ -82,16 +96,19 @@ export default function Footer() {
                 <Image
                   src="/curved-kingdom-logo.png"
                   alt="Curved Kingdom"
-                  width={70}
-                  height={70}
-                  className="relative"
+                  width={60}
+                  height={60}
+                  className="sm:w-17.5 sm:h-17.5"
                 />
 
-              </div>
-
-              <div>
-
-                <h3 className="text-2xl font-bold text-yellow-400">
+                <h3
+  className="
+    text-xl
+    font-bold
+    text-yellow-400
+    sm:text-2xl
+  "
+>
                   Curved Kingdom
                 </h3>
 
@@ -117,7 +134,19 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="rounded-3xl border border-yellow-500/20 bg-white/5 p-8 backdrop-blur-xl"
+            className="
+  rounded-3xl
+  border
+  border-yellow-500/20
+  bg-white/5
+  p-6
+  backdrop-blur-xl
+  transition-all
+  duration-300
+  hover:border-yellow-400/50
+  hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
+  sm:p-8
+"
           >
             <h4 className="text-xl font-bold text-white">
               Kingdom Navigation
@@ -165,12 +194,6 @@ export default function Footer() {
 
               
 
-              <Link
-                href="/register"
-                className="font-semibold text-yellow-400 transition hover:text-yellow-300"
-              >
-                Become A Founding Citizen
-              </Link>
 
             </div>
 
@@ -183,7 +206,19 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="rounded-3xl border border-yellow-500/20 bg-white/5 p-8 backdrop-blur-xl"
+            className="
+  rounded-3xl
+  border
+  border-yellow-500/20
+  bg-white/5
+  p-6
+  backdrop-blur-xl
+  transition-all
+  duration-300
+  hover:border-yellow-400/50
+  hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
+  sm:p-8
+"
           >
             <h4 className="text-xl font-bold text-white">
               Follow The Kingdom
@@ -236,6 +271,26 @@ export default function Footer() {
                 <FaYoutube size={20} />
               </motion.a>
 
+              <motion.a
+  whileHover={{ scale: 1.15 }}
+  href="https://linkedin.com/company/curvedkingdom"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex h-12 w-12 items-center justify-center rounded-full border border-yellow-500/30 bg-black/40 text-yellow-400 transition hover:border-yellow-400"
+>
+  <FaLinkedinIn size={20} />
+</motion.a>
+
+<motion.a
+  whileHover={{ scale: 1.15 }}
+  href="https://t.me/CurvedKingdomOfficial"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex h-12 w-12 items-center justify-center rounded-full border border-yellow-500/30 bg-black/40 text-yellow-400 transition hover:border-yellow-400"
+>
+  <FaTelegramPlane size={20} />
+</motion.a>
+
             </div>
 
           </motion.div>
@@ -246,7 +301,19 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="rounded-3xl border border-yellow-500/20 bg-white/5 p-8 backdrop-blur-xl"
+            className="
+  rounded-3xl
+  border
+  border-yellow-500/20
+  bg-white/5
+  p-6
+  backdrop-blur-xl
+  transition-all
+  duration-300
+  hover:border-yellow-400/50
+  hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
+  sm:p-8
+"
           >
 
             <h4 className="text-xl font-bold text-white">

@@ -3,14 +3,14 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import Container from "./Container";
+
 
 export default function Hero() {
   return (
     <section
-      id="vision"
-      className="relative min-h-screen overflow-hidden bg-black"
-    >
+  id="vision"
+  className="relative min-h-screen overflow-hidden bg-black pt-20"
+>
       {/* Animated Background */}
       <motion.div
         initial={{ scale: 1 }}
@@ -59,14 +59,14 @@ export default function Hero() {
       />
 
       {/* Main Content */}
-      <div className="relative z-10 flex min-h-screen items-center justify-center">
-  <Container>
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 sm:px-6 lg:px-8">
+  
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="mx-auto flex w-full max-w-4xl flex-col items-center text-center"
+          className="mx-auto flex w-full max-w-5xl flex-col items-center text-center"
         >
           {/* Logo */}
           <motion.div
@@ -85,13 +85,13 @@ export default function Hero() {
             <div className="absolute inset-0 rounded-full bg-yellow-500/20 blur-3xl" />
 
             <Image
-              src="/curved-kingdom-logo.png"
-              alt="Curved Kingdom Logo"
-              width={180}
-              height={180}
-              priority
-              className="relative z-10"
-            />
+  src="/curved-kingdom-logo.png"
+  alt="Curved Kingdom Logo"
+  width={180}
+  height={180}
+  priority
+  className="relative z-10 h-32 w-32 sm:h-40 sm:w-40 lg:h-44 lg:w-44"
+/>
           </motion.div>
 
           {/* Welcome */}
@@ -99,7 +99,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="mt-8 text-xs uppercase tracking-[8px] text-yellow-400"
+            className="mt-6 text-[10px] uppercase tracking-[5px] text-yellow-400 sm:mt-8 sm:text-xs sm:tracking-[8px]"
           >
             Welcome To
           </motion.p>
@@ -109,7 +109,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="mt-4 text-5xl font-black leading-none text-white sm:text-6xl"
+           className="mt-4 text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl"
           >
             CURVED
             <br />
@@ -133,7 +133,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
-            className="mt-6 max-w-md text-base leading-8 text-gray-300"
+            className="mt-6 max-w-xl px-2 text-sm leading-7 text-gray-300 sm:px-0 sm:text-base sm:leading-8"
           >
             Curved Kingdom is more than a social platform.
             It is a digital ecosystem where every citizen builds an
@@ -146,41 +146,51 @@ export default function Hero() {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2 }}
-            className="mt-10 flex w-full flex-col gap-4"
+            className="mt-8 flex w-full max-w-md flex-col gap-4 sm:mt-10"
           >
-            <button
+            <a
+              href="/register"
               className="
-                rounded-full
-                bg-yellow-500
-                py-4
-                text-lg
-                font-bold
-                text-black
-                transition
-                hover:scale-105
-                hover:bg-yellow-400
-                shadow-[0_0_30px_rgba(255,200,0,0.45)]
-              "
+  w-full
+  rounded-full
+  bg-yellow-500
+  px-6
+  py-4
+  text-base
+  font-bold
+  text-black
+  transition-all
+  duration-300
+  hover:scale-105
+  hover:bg-yellow-400
+  shadow-[0_0_30px_rgba(255,200,0,0.45)]
+  sm:text-lg
+"
             >
               Enter The Kingdom
-            </button>
+            </a>
 
-            <button
+            <a
+              href="#features"
               className="
-                rounded-full
-                border
-                border-yellow-500
-                py-4
-                text-lg
-                font-semibold
-                text-yellow-400
-                transition
-                hover:bg-yellow-500
-                hover:text-black
-              "
+  w-full
+  rounded-full
+  border
+  border-yellow-500
+  px-6
+  py-4
+  text-base
+  font-semibold
+  text-yellow-400
+  transition-all
+  duration-300
+  hover:bg-yellow-500
+  hover:text-black
+  sm:text-lg
+"
             >
               Discover The Vision
-            </button>
+            </a>
           </motion.div>
                     {/* Scroll Indicator */}
           <motion.div
@@ -194,13 +204,13 @@ export default function Hero() {
               duration: 2,
               repeat: Infinity,
             }}
-            className="mt-16 flex flex-col items-center"
+            className="mt-12 flex flex-col items-center sm:mt-16"
           >
-            <p className="mb-3 text-xs uppercase tracking-[6px] text-yellow-400">
+            <p className="mb-3 text-[10px] uppercase tracking-[4px] text-yellow-400 sm:text-xs sm:tracking-[6px]">
               Scroll To Explore
             </p>
 
-            <div className="flex h-14 w-8 justify-center rounded-full border-2 border-yellow-500">
+            <div className="flex h-12 w-7 justify-center rounded-full border-2 border-yellow-500 sm:h-14 sm:w-8">
               <motion.div
                 animate={{
                   y: [4, 20, 4],
@@ -220,7 +230,7 @@ export default function Hero() {
           </motion.div>
 
         </motion.div>
-            </Container>
+            
     </div>
   </section>
   );
