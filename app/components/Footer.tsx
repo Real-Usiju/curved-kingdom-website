@@ -63,7 +63,7 @@ export default function Footer() {
           className="mx-auto h-0.5 w-28 bg-yellow-500 sm:w-44"
         />
 
-        <div className="mt-12 grid gap-6 sm:mt-16 sm:gap-8 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-12 grid grid-cols-1 gap-6 sm:mt-16 sm:gap-8 md:grid-cols-2 xl:grid-cols-4">
 
           {/* Brand */}
 
@@ -72,18 +72,20 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="
-  rounded-3xl
-  border
-  border-yellow-500/20
-  bg-white/5
-  p-6
-  backdrop-blur-xl
-  transition-all
-  duration-300
-  hover:border-yellow-400/50
-  hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
-  sm:p-8
+            
+  className="
+w-full
+rounded-3xl
+border
+border-yellow-500/20
+bg-white/5
+p-6
+backdrop-blur-xl
+transition-all
+duration-300
+hover:border-yellow-400/50
+hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
+sm:p-8
 "
           >
 
@@ -135,17 +137,18 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="
-  rounded-3xl
-  border
-  border-yellow-500/20
-  bg-white/5
-  p-6
-  backdrop-blur-xl
-  transition-all
-  duration-300
-  hover:border-yellow-400/50
-  hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
-  sm:p-8
+w-full
+rounded-3xl
+border
+border-yellow-500/20
+bg-white/5
+p-6
+backdrop-blur-xl
+transition-all
+duration-300
+hover:border-yellow-400/50
+hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
+sm:p-8
 "
           >
             <h4 className="text-xl font-bold text-white">
@@ -206,18 +209,19 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="
-  rounded-3xl
-  border
-  border-yellow-500/20
-  bg-white/5
-  p-6
-  backdrop-blur-xl
-  transition-all
-  duration-300
-  hover:border-yellow-400/50
-  hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
-  sm:p-8
+           className="
+w-full
+rounded-3xl
+border
+border-yellow-500/20
+bg-white/5
+p-6
+backdrop-blur-xl
+transition-all
+duration-300
+hover:border-yellow-400/50
+hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
+sm:p-8
 "
           >
             <h4 className="text-xl font-bold text-white">
@@ -302,17 +306,18 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="
-  rounded-3xl
-  border
-  border-yellow-500/20
-  bg-white/5
-  p-6
-  backdrop-blur-xl
-  transition-all
-  duration-300
-  hover:border-yellow-400/50
-  hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
-  sm:p-8
+w-full
+rounded-3xl
+border
+border-yellow-500/20
+bg-white/5
+p-6
+backdrop-blur-xl
+transition-all
+duration-300
+hover:border-yellow-400/50
+hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
+sm:p-8
 "
           >
 

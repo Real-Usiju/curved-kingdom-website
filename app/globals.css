@@ -25,6 +25,9 @@ body {
 
 section {
   width: 100%;
+  overflow: hidden;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .kingdom-container {
@@ -36,7 +39,8 @@ section {
 
 @media (max-width:768px) {
   .kingdom-container {
-    padding-inline:16px;
+    padding-left:20px;
+    padding-right:20px;
   }
 }
 
