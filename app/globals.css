@@ -42,25 +42,31 @@ section {
      padding-inline:16px;
   }
 }
-/* Curved Kingdom Universal Card */
+/* Universal mobile section spacing */
 
-.royal-card {
-  border-radius: 30px;
-  border: 1px solid rgba(234,179,8,0.2);
-  background: rgba(255,255,255,0.05);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  padding: 2rem;
+.section-container {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 
-@media (max-width:768px){
-
-  .royal-card {
-    padding: 1.25rem;
-    border-radius: 24px;
+@media (min-width: 640px) {
+  .section-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
+}
 
+
+@media (min-width: 1024px) {
+  .section-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }
 
 
