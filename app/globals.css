@@ -39,10 +39,10 @@ section {
 
 @media (max-width:768px) {
   .kingdom-container {
-    padding-left:20px;
-    padding-right:20px;
+     padding-inline:16px;
   }
 }
+
 
 .kingdom-card{
   border-radius:30px;
