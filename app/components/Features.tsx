@@ -81,7 +81,7 @@ export default function Features() {
 
       </div>
 
-      <div className="relative mx-auto max-w-4xl px-6">
+    <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
 
@@ -145,7 +145,7 @@ export default function Features() {
 
         {/* Feature Cards */}
 
-        <div className="mt-20 space-y-8">
+        <div className="mt-12 space-y-6 sm:mt-16 sm:space-y-8">
                   {pillars.slice(0, 2).map((pillar, index) => {
           const Icon = pillar.icon;
 
@@ -166,21 +166,22 @@ export default function Features() {
               className="
   group
   relative
+  w-full
   overflow-hidden
   rounded-3xl
   border
   border-yellow-500/20
-  bg-linear-to-br
-  from-[#111111]
-  to-[#1a1a1a]
-  p-6
-  sm:p-8
-  shadow-[0_0_40px_rgba(255,200,0,0.08)]
+  bg-white/5
+  p-5
+  backdrop-blur-xl
+  shadow-[0_0_25px_rgba(255,200,0,0.08)]
   transition-all
-  duration-500
+  duration-300
   hover:-translate-y-2
-  hover:border-yellow-400
-  hover:shadow-[0_0_45px_rgba(255,200,0,0.25)]
+  hover:border-yellow-400/50
+  hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
+  sm:p-6
+  lg:p-8
 "
             >
               {/* Top Glow */}
@@ -303,22 +304,25 @@ export default function Features() {
                 scale: 1.01,
               }}
               className="
-                group
-                relative
-                overflow-hidden
-                rounded-4xl
-                border
-                border-yellow-500/20
-                bg-linear-to-br
-                from-[#111111]
-                to-[#1a1a1a]
-                p-8
-                shadow-[0_0_40px_rgba(255,200,0,0.08)]
-                transition-all
-                duration-500
-                hover:border-yellow-400
-                hover:shadow-[0_0_45px_rgba(255,200,0,0.25)]
-              "
+  group
+  relative
+  w-full
+  overflow-hidden
+  rounded-3xl
+  border
+  border-yellow-500/20
+  bg-white/5
+  p-5
+  backdrop-blur-xl
+  shadow-[0_0_25px_rgba(255,200,0,0.08)]
+  transition-all
+  duration-300
+  hover:-translate-y-2
+  hover:border-yellow-400/50
+  hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
+  sm:p-6
+  lg:p-8
+"
             >
               {/* Top Glow */}
               <div className="absolute left-0 top-0 h-1 w-full bg-linear-to-r from-transparent via-yellow-400 to-transparent" />
@@ -394,17 +398,18 @@ export default function Features() {
           className="pt-12 text-center"
         >
           <div
-  className="
-    rounded-3xl
-    border
-    border-yellow-500/20
-    bg-linear-to-br
-    from-[#111111]
-    to-[#1a1a1a]
-    p-6
-    sm:p-8
-    lg:p-10
-  "
+ className="
+  w-full
+  rounded-3xl
+  border
+  border-yellow-500/20
+  bg-white/5
+  p-5
+  backdrop-blur-xl
+  shadow-[0_0_25px_rgba(255,200,0,0.08)]
+  sm:p-6
+  lg:p-8
+"
 >
           
             <p className="uppercase tracking-[8px] text-yellow-400">
