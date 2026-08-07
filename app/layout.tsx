@@ -26,15 +26,18 @@ export const metadata: Metadata = {
     "Curved Kingdom is a digital civilization where identity, purpose, innovation, community, and legacy come together.",
 
   keywords: [
-    "Curved Kingdom",
-    "Curved Kingdom digital civilization",
-    "Digital Civilization",
-    "Digital Ecosystem",
-    "Digital Identity",
-    "Online Community",
-    "Innovation",
-    "Legacy",
-  ],
+  "Curved Kingdom",
+  "Curved Kingdom Digital Civilization",
+  "Curved Kingdom website",
+  "digital civilization",
+  "digital ecosystem",
+  "digital community",
+  "digital identity",
+  "online community",
+  "community platform",
+  "digital innovation",
+  "digital legacy",
+],
 
   authors: [
     {
@@ -43,7 +46,12 @@ export const metadata: Metadata = {
   ],
 
   creator: "Curved Kingdom",
-  publisher: "Curved Kingdom",
+
+alternates: {
+  canonical: "https://curvedkingdom.com",
+},
+
+publisher: "Curved Kingdom",
 
   category: "Technology",
 
