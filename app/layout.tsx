@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -17,22 +18,20 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://curvedkingdom.com"),
 
   title: {
-    default: "Curved Kingdom ",
+    default: "Curved Kingdom | Digital Civilization",
     template: "%s | Curved Kingdom",
   },
 
   description:
-    "Curved Kingdom is a digital ecosystem where citizens build identity, create meaningful connections, discover opportunities, and leave a lasting legacy.",
+    "Curved Kingdom is a digital civilization where identity, purpose, innovation, community, and legacy come together.",
 
   keywords: [
     "Curved Kingdom",
-    "Digital Kingdom",
+    "Curved Kingdom digital civilization",
     "Digital Civilization",
-    "Social Ecosystem",
-    "Online Community",
+    "Digital Ecosystem",
     "Digital Identity",
-    "Community Platform",
-    "Kingdom",
+    "Online Community",
     "Innovation",
     "Legacy",
   ],
@@ -44,7 +43,6 @@ export const metadata: Metadata = {
   ],
 
   creator: "Curved Kingdom",
-
   publisher: "Curved Kingdom",
 
   category: "Technology",
@@ -68,14 +66,14 @@ export const metadata: Metadata = {
     siteName: "Curved Kingdom",
     title: "Curved Kingdom | Digital Civilization",
     description:
-      "Join Curved Kingdom and become part of a new digital civilization where identity, purpose, innovation, and legacy come together.",
+      "Join Curved Kingdom and become part of a new digital civilization where identity, purpose, innovation, community, and legacy come together.",
 
     images: [
       {
         url: "/curved-kingdom-logo.png",
         width: 1200,
         height: 630,
-        alt: "Curved Kingdom",
+        alt: "Curved Kingdom - Digital Civilization",
       },
     ],
   },
@@ -88,10 +86,11 @@ export const metadata: Metadata = {
 
     images: ["/curved-kingdom-logo.png"],
   },
-   
-verification: {
-  google: "C_LzPyFg__CkhXXB9dAMt6eilWI9_qOdbTKfLVbR1W4",
-},
+
+  verification: {
+    google: "C_LzPyFg__CkhXXB9dAMt6eilWI9_qOdbTKfLVbR1W4",
+  },
+
   icons: {
     icon: "/curved-kingdom-logo.png",
     shortcut: "/curved-kingdom-logo.png",
@@ -109,11 +108,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-  {children}
-  <Analytics />
-  <SpeedInsights />
-</body>
+      <body>
+        {children}
+
+        <Analytics />
+        <SpeedInsights />
+      </body>
     </html>
   );
 }

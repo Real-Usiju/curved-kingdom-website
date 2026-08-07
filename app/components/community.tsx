@@ -103,7 +103,7 @@ export default function Community() {
   </p>
 </motion.div>
 
-        <div className="mt-20 grid gap-8 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:mt-16 sm:gap-8 lg:grid-cols-3">
                    {/* Royal Identity Card */}
 
           <motion.div
@@ -113,17 +113,24 @@ export default function Community() {
             transition={{ duration: 0.6 }}
             whileHover={{ y: -10 }}
             className="
+  group
+  relative
+  w-full
+  overflow-hidden
   rounded-3xl
   border
   border-yellow-500/20
   bg-white/5
-  p-6
+  p-5
   backdrop-blur-xl
+  shadow-[0_0_25px_rgba(255,200,0,0.08)]
   transition-all
   duration-300
-  hover:border-yellow-400
-  hover:shadow-[0_0_35px_rgba(255,200,0,0.18)]
-  sm:p-8
+  hover:-translate-y-2
+  hover:border-yellow-400/50
+  hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
+  sm:p-6
+  lg:p-8
 "
           >
             <div className="
@@ -161,7 +168,26 @@ export default function Community() {
               delay: 0.15,
             }}
             whileHover={{ y: -10 }}
-            className="rounded-3xl border border-yellow-500/20 bg-white/5 p-8 backdrop-blur-xl"
+            className="
+  group
+  relative
+  w-full
+  overflow-hidden
+  rounded-3xl
+  border
+  border-yellow-500/20
+  bg-white/5
+  p-5
+  backdrop-blur-xl
+  shadow-[0_0_25px_rgba(255,200,0,0.08)]
+  transition-all
+  duration-300
+  hover:-translate-y-2
+  hover:border-yellow-400/50
+  hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
+  sm:p-6
+  lg:p-8
+"
           >
             <div className="
   flex
@@ -201,7 +227,26 @@ export default function Community() {
               delay: 0.3,
             }}
             whileHover={{ y: -10 }}
-            className="rounded-3xl border border-yellow-500/20 bg-white/5 p-8 backdrop-blur-xl"
+            className="
+  group
+  relative
+  w-full
+  overflow-hidden
+  rounded-3xl
+  border
+  border-yellow-500/20
+  bg-white/5
+  p-5
+  backdrop-blur-xl
+  shadow-[0_0_25px_rgba(255,200,0,0.08)]
+  transition-all
+  duration-300
+  hover:-translate-y-2
+  hover:border-yellow-400/50
+  hover:shadow-[0_0_35px_rgba(255,200,0,0.15)]
+  sm:p-6
+  lg:p-8
+"
           >
             <div className="
   flex
