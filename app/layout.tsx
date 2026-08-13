@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { AuthProvider } from "../src/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,18 +27,18 @@ export const metadata: Metadata = {
     "Curved Kingdom is a digital civilization where identity, purpose, innovation, community, and legacy come together.",
 
   keywords: [
-  "Curved Kingdom",
-  "Curved Kingdom Digital Civilization",
-  "Curved Kingdom website",
-  "digital civilization",
-  "digital ecosystem",
-  "digital community",
-  "digital identity",
-  "online community",
-  "community platform",
-  "digital innovation",
-  "digital legacy",
-],
+    "Curved Kingdom",
+    "Curved Kingdom Digital Civilization",
+    "Curved Kingdom website",
+    "digital civilization",
+    "digital ecosystem",
+    "digital community",
+    "digital identity",
+    "online community",
+    "community platform",
+    "digital innovation",
+    "digital legacy",
+  ],
 
   authors: [
     {
@@ -47,11 +48,11 @@ export const metadata: Metadata = {
 
   creator: "Curved Kingdom",
 
-alternates: {
-  canonical: "https://curvedkingdom.com",
-},
+  alternates: {
+    canonical: "https://curvedkingdom.com",
+  },
 
-publisher: "Curved Kingdom",
+  publisher: "Curved Kingdom",
 
   category: "Technology",
 
@@ -116,8 +117,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body>
-        {children}
+      <body className="min-h-full">
+        <AuthProvider>
+          {children}
+        </AuthProvider>
 
         <Analytics />
         <SpeedInsights />

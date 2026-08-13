@@ -1,93 +1,208 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 
+import {
+  signInWithPopup,
+  signInWithRedirect,
+} from "firebase/auth";
+
+import {
+  auth,
+  googleProvider,
+  authPersistence,
+} from "../../lib/firebase";
+
+import { getCitizenProfile } from "../services/user";
+
 export default function LoginPage() {
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      /*
+       * --------------------------------------------------
+       * KEEP CITIZEN SIGNED IN
+       * --------------------------------------------------
+       */
+
+      await authPersistence;
+
+      let result;
+
+      /*
+       * --------------------------------------------------
+       * GOOGLE LOGIN
+       * --------------------------------------------------
+       */
+
+      try {
+        result = await signInWithPopup(
+          auth,
+          googleProvider
+        );
+      } catch (popupError: unknown) {
+        const firebaseError = popupError as {
+          code?: string;
+        };
+
+        /*
+         * Popup unavailable?
+         * Use Google redirect instead.
+         */
+
+        if (
+          firebaseError.code ===
+            "auth/popup-blocked" ||
+          firebaseError.code ===
+            "auth/popup-closed-by-user" ||
+          firebaseError.code ===
+            "auth/cancelled-popup-request"
+        ) {
+          await signInWithRedirect(
+            auth,
+            googleProvider
+          );
+
+          return;
+        }
+
+        throw popupError;
+      }
+
+      /*
+       * --------------------------------------------------
+       * CHECK FOR KINGDOM PROFILE
+       * --------------------------------------------------
+       */
+
+      const citizen =
+        await getCitizenProfile(
+          result.user.uid
+        );
+
+      /*
+       * --------------------------------------------------
+       * NEW CITIZEN
+       * --------------------------------------------------
+       *
+       * Google authentication succeeded,
+       * but this UID has no Kingdom profile.
+       *
+       * Send the citizen to registration.
+       */
+
+      if (!citizen) {
+        console.log(
+          "New citizen detected. Sending to registration."
+        );
+
+        router.replace("/register");
+
+        return;
+      }
+
+      /*
+       * --------------------------------------------------
+       * EXISTING CITIZEN
+       * --------------------------------------------------
+       *
+       * The citizen already has:
+       *
+       * users/{uid}
+       *
+       * Therefore they go directly to Palace.
+       *
+       * NO REFORGE BUTTON
+       * NO REGISTRATION
+       *
+       * Reforge is available later through:
+       *
+       * Palace
+       *   ↓
+       * Capital
+       *   ↓
+       * Profile
+       *   ↓
+       * Reforge My Kingdom
+       */
+
+      console.log(
+        "Existing citizen detected:",
+        citizen.kingdomName
+      );
+
+      router.replace("/palace");
+
+    } catch (error) {
+      console.error(
+        "Login error:",
+        error
+      );
+
+      setError(
+        "The Kingdom could not complete your entrance. Please try again."
+      );
+
+      setLoading(false);
+    }
+  };
+
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#050505]">
+    <main className="flex min-h-screen items-center justify-center bg-black px-5 py-12 text-white">
 
-      {/* Background Glow */}
+      <div className="w-full max-w-md">
 
-      <div className="absolute inset-0 overflow-hidden">
+        <div className="rounded-3xl border border-yellow-500/20 bg-[#0c0c0c] p-8 shadow-[0_0_70px_rgba(234,179,8,.12)] sm:p-10">
 
-        <motion.div
-          animate={{
-            scale: [1, 1.15, 1],
-            opacity: [0.08, 0.18, 0.08],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-          }}
-          className="
-            absolute
-            left-1/2
-            top-1/2
-            h-175
-            w-175
-            -translate-x-1/2
-            -translate-y-1/2
-            rounded-full
-            bg-yellow-500
-            blur-[220px]
-          "
-        />
-
-      </div>
-
-      <div className="relative flex min-h-screen items-center justify-center px-6">
-
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: .8 }}
-          className="
-            w-full
-            max-w-lg
-            rounded-[35px]
-            border
-            border-yellow-500/20
-            bg-[#101010]/90
-            p-10
-            backdrop-blur-xl
-            shadow-[0_0_45px_rgba(255,200,0,.15)]
-          "
-        >
-
-          {/* Logo */}
+          {/* LOGO */}
 
           <div className="flex justify-center">
 
             <Image
               src="/curved-kingdom-logo.png"
               alt="Curved Kingdom"
-              width={95}
-              height={95}
+              width={90}
+              height={90}
+              priority
             />
 
           </div>
 
-          {/* Heading */}
 
-          <h1 className="mt-8 text-center text-4xl font-black text-white">
-            Welcome Back
-          </h1>
+          {/* ROYAL ENTRANCE */}
 
-          <p className="mx-auto mt-5 max-w-md text-center leading-8 text-gray-400">
-            Return to Curved Kingdom and continue building your legacy.
+          <p className="mt-8 text-center text-xs font-semibold uppercase tracking-[5px] text-yellow-400">
+            Royal Entrance
           </p>
 
-          {/* Google Button */}
 
-          <motion.button
-            whileHover={{
-              scale: 1.02,
-              boxShadow: "0 0 35px rgba(255,200,0,.25)",
-            }}
-            whileTap={{ scale: .97 }}
+          <h1 className="mt-4 text-center text-4xl font-black">
+            Enter Your Kingdom
+          </h1>
+
+
+          <p className="mt-5 text-center text-sm leading-7 text-gray-400">
+            Return to your Kingdom and continue
+            your Royal journey.
+          </p>
+
+
+          {/* GOOGLE LOGIN */}
+
+          <button
+            type="button"
+            onClick={handleLogin}
+            disabled={loading}
             className="
               mt-10
               flex
@@ -96,55 +211,46 @@ export default function LoginPage() {
               justify-center
               gap-4
               rounded-2xl
-              border
-              border-yellow-500/20
-              bg-[#181818]
-              px-6
+              bg-yellow-400
               py-4
               text-lg
-              font-semibold
-              text-white
+              font-bold
+              text-black
               transition
-              hover:border-yellow-400
+              hover:scale-[1.02]
+              hover:bg-yellow-300
+              active:scale-[0.98]
+              disabled:cursor-not-allowed
+              disabled:opacity-60
             "
           >
 
-            <FcGoogle size={28} />
+            <FcGoogle size={25} />
 
-            Continue with Google
+            {loading
+              ? "Entering the Kingdom..."
+              : "Continue with Google"}
 
-          </motion.button>
+          </button>
 
-          {/* Divider */}
 
-          <div className="my-10 flex items-center">
+          {/* ERROR */}
 
-            <div className="h-px flex-1 bg-yellow-500/20" />
+          {error && (
+            <p className="mt-5 text-center text-sm leading-6 text-red-400">
+              {error}
+            </p>
+          )}
 
-            <span className="px-4 text-sm uppercase tracking-[4px] text-gray-500">
-              Royal Access
-            </span>
 
-            <div className="h-px flex-1 bg-yellow-500/20" />
+          {/* INFORMATION */}
 
-          </div>
-
-          {/* Register */}
-
-          <p className="text-center text-gray-400">
-
-            New to Curved Kingdom?
-
-            <Link
-              href="/register"
-              className="ml-2 font-semibold text-yellow-400 hover:text-yellow-300"
-            >
-              Become A Founding Citizen
-            </Link>
-
+          <p className="mt-8 text-center text-xs leading-6 text-gray-600">
+            Your Royal Identity remains connected
+            to your Google account.
           </p>
 
-        </motion.div>
+        </div>
 
       </div>
 

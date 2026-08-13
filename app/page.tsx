@@ -9,7 +9,9 @@ import Roadmap from "./components/Roadmap";
 import Community from "./components/community";
 import Footer from "./components/Footer";
 import RoyalIntro from "./components/RoyalIntro";
-import RoyalProclamation from "./components/RoyalProclamation";
+ {/*import RoyalProclamation from "./components/RoyalProclamation";*/}
+import KingdomChronicles from "./components/KingdomChronicles";
+import FoundersHall from "./components/FoundersHall";
 
 export default function Home() {
   const [showIntro, setShowIntro] = useState(true);
@@ -44,11 +46,15 @@ export default function Home() {
 
         <Features />
 
-        <RoyalProclamation />
+         {/*<RoyalProclamation />*/}
 
         <Roadmap />
 
         <Community />
+
+        <KingdomChronicles />
+
+        <FoundersHall />
 
         <Footer />
       </main>
