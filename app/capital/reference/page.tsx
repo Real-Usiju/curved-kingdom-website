@@ -82,11 +82,11 @@ export default function ReferencePage() {
 
           {/* INTRODUCTION */}
 
-          <section className="mt-6 rounded-2xl border border-yellow-500/15 bg-white/[0.025] p-5">
+          <section className="mt-6 rounded-2xl border border-yellow-500/15 bg-white/2.5 p-5">
 
             <div className="flex items-start gap-3">
 
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-yellow-500/15 bg-yellow-500/[0.06]">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-yellow-500/15 bg-yellow-500/6">
 
                 <Crown
                   size={20}
@@ -148,7 +148,7 @@ export default function ReferencePage() {
                       rounded-2xl
                       border
                       border-yellow-500/10
-                      bg-white/[0.025]
+                      bg-white/2.5
                       p-4
                       text-left
                       transition
@@ -169,7 +169,7 @@ export default function ReferencePage() {
                         rounded-xl
                         border
                         border-yellow-500/15
-                        bg-yellow-500/[0.06]
+                        bg-yellow-500/6
                       "
                     >
 
@@ -215,7 +215,7 @@ export default function ReferencePage() {
 
           {/* KINGDOM LANGUAGE */}
 
-          <section className="mt-7 rounded-2xl border border-yellow-500/10 bg-white/[0.02] p-5">
+          <section className="mt-7 rounded-2xl border border-yellow-500/10 bg-white/2 p-5">
 
             <div className="flex items-center gap-3">
 

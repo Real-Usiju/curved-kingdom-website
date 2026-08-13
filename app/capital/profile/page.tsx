@@ -488,7 +488,7 @@ export default function ProfilePage() {
                   Kingdom Name
                 </label>
 
-                <div className="flex items-center gap-3 rounded-xl border border-yellow-500/10 bg-white/[0.025] px-4 py-3">
+                <div className="flex items-center gap-3 rounded-xl border border-yellow-500/10 bg-white/2.5 px-4 py-3">
 
                   <Crown
                     size={17}
@@ -520,7 +520,7 @@ export default function ProfilePage() {
                   Royal Alias
                 </label>
 
-                <div className="flex items-center gap-3 rounded-xl border border-yellow-500/10 bg-white/[0.025] px-4 py-3">
+                <div className="flex items-center gap-3 rounded-xl border border-yellow-500/10 bg-white/2.5 px-4 py-3">
 
                   <UserRound
                     size={17}
@@ -552,7 +552,7 @@ export default function ProfilePage() {
                   Royal Rank
                 </label>
 
-                <div className="flex items-center gap-3 rounded-xl border border-yellow-500/10 bg-white/[0.025] px-4 py-3">
+                <div className="flex items-center gap-3 rounded-xl border border-yellow-500/10 bg-white/2.5 px-4 py-3">
 
                   <Shield
                     size={17}
@@ -624,7 +624,7 @@ export default function ProfilePage() {
                     );
 
                   }}
-                  className="flex w-full items-center justify-between gap-3 rounded-xl border border-yellow-500/10 bg-white/[0.025] px-4 py-3 text-left transition active:border-yellow-400/40"
+                  className="flex w-full items-center justify-between gap-3 rounded-xl border border-yellow-500/10 bg-white/2.5 px-4 py-3 text-left transition active:border-yellow-400/40"
                 >
 
                   <div className="flex min-w-0 items-center gap-3">
@@ -699,7 +699,7 @@ export default function ProfilePage() {
                             className={`w-full rounded-xl border p-4 text-left transition ${
                               selected
                                 ? "border-yellow-400 bg-yellow-400/10"
-                                : "border-yellow-500/10 bg-white/[0.025] active:border-yellow-400/40"
+                                : "border-yellow-500/10 bg-white/2.5 active:border-yellow-400/40"
                             }`}
                           >
 
@@ -774,7 +774,7 @@ export default function ProfilePage() {
                     );
 
                   }}
-                  className="flex w-full items-center justify-between gap-3 rounded-xl border border-yellow-500/10 bg-white/[0.025] px-4 py-3 text-left transition active:border-yellow-400/40"
+                  className="flex w-full items-center justify-between gap-3 rounded-xl border border-yellow-500/10 bg-white/2.5 px-4 py-3 text-left transition active:border-yellow-400/40"
                 >
 
                   <div className="flex min-w-0 items-center gap-3">
@@ -849,7 +849,7 @@ export default function ProfilePage() {
                             className={`w-full rounded-xl border p-4 text-left transition ${
                               selected
                                 ? "border-yellow-400 bg-yellow-400/10"
-                                : "border-yellow-500/10 bg-white/[0.025] active:border-yellow-400/40"
+                                : "border-yellow-500/10 bg-white/2.5 active:border-yellow-400/40"
                             }`}
                           >
 
@@ -911,7 +911,7 @@ export default function ProfilePage() {
                 </label>
 
 
-                <div className="flex items-start gap-3 rounded-xl border border-yellow-500/10 bg-white/[0.025] px-4 py-3">
+                <div className="flex items-start gap-3 rounded-xl border border-yellow-500/10 bg-white/2.5 px-4 py-3">
 
                   <BookOpen
                     size={17}
@@ -964,7 +964,7 @@ export default function ProfilePage() {
 
               {/* ROYAL ACHIEVEMENTS */}
 
-              <div className="rounded-2xl border border-yellow-500/10 bg-white/[0.025] p-4">
+              <div className="rounded-2xl border border-yellow-500/10 bg-white/2.5 p-4">
 
                 <Trophy
                   size={20}
@@ -986,7 +986,7 @@ export default function ProfilePage() {
 
               {/* GLORY */}
 
-              <div className="rounded-2xl border border-yellow-500/10 bg-white/[0.025] p-4">
+              <div className="rounded-2xl border border-yellow-500/10 bg-white/2.5 p-4">
 
                 <Trophy
                   size={20}
@@ -1029,7 +1029,7 @@ export default function ProfilePage() {
                 rounded-2xl
                 border
                 border-yellow-400/30
-                bg-yellow-400/[0.08]
+                bg-yellow-400/8
                 px-4
                 py-3.5
                 text-sm

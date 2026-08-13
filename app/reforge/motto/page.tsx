@@ -147,7 +147,7 @@ export default function ReforgeMottoPage() {
                   className={`w-full rounded-2xl border p-5 transition ${
                     selected
                       ? "border-yellow-400 bg-yellow-400/10 shadow-[0_0_25px_rgba(234,179,8,.10)]"
-                      : "border-yellow-500/15 bg-white/[0.025] hover:border-yellow-400/40 hover:bg-yellow-400/5"
+                      : "border-yellow-500/15 bg-white/2.5 hover:border-yellow-400/40 hover:bg-yellow-400/5"
                   }`}
                 >
 

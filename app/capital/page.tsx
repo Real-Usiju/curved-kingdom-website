@@ -81,7 +81,7 @@ export default function CapitalPage() {
 
           {/* ROYAL STATS */}
 
-          <section className="mx-auto mt-6 w-full max-w-[340px] overflow-hidden rounded-2xl border border-yellow-500/15 bg-white/[0.025]">
+          <section className="mx-auto mt-6 w-full max-w-85 overflow-hidden rounded-2xl border border-yellow-500/15 bg-white/2.5">
 
             <div className="grid grid-cols-3">
 
@@ -181,7 +181,7 @@ export default function CapitalPage() {
                     flex w-full items-center gap-3
                     rounded-2xl
                     border border-yellow-500/10
-                    bg-white/[0.025]
+                    bg-white/2.5
                     p-4
                     transition
                     active:scale-[0.98]
