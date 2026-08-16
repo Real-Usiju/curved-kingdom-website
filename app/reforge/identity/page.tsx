@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
-export default function ReforgeIdentityPage() {
+function ReforgeIdentityContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -20,7 +20,8 @@ export default function ReforgeIdentityPage() {
   const [kingdomName, setKingdomName] =
     useState("");
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] =
+    useState(false);
 
   const handleContinue = () => {
     if (!kingdomName.trim()) return;
@@ -210,5 +211,13 @@ export default function ReforgeIdentityPage() {
       </div>
 
     </main>
+  );
+}
+
+export default function ReforgeIdentityPage() {
+  return (
+    <Suspense fallback={null}>
+      <ReforgeIdentityContent />
+    </Suspense>
   );
 }

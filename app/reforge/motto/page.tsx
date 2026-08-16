@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 const mottos = [
   {
@@ -32,7 +32,7 @@ const mottos = [
   },
 ];
 
-export default function ReforgeMottoPage() {
+function ReforgeMottoContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -42,7 +42,8 @@ export default function ReforgeMottoPage() {
   const [selectedMotto, setSelectedMotto] =
     useState("");
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] =
+    useState(false);
 
   const handleContinue = () => {
     if (!selectedMotto) return;
@@ -131,6 +132,7 @@ export default function ReforgeMottoPage() {
           <div className="relative mt-8 space-y-3 text-left">
 
             {mottos.map((motto) => {
+
               const selected =
                 selectedMotto === motto.title;
 
@@ -147,7 +149,7 @@ export default function ReforgeMottoPage() {
                   className={`w-full rounded-2xl border p-5 transition ${
                     selected
                       ? "border-yellow-400 bg-yellow-400/10 shadow-[0_0_25px_rgba(234,179,8,.10)]"
-                      : "border-yellow-500/15 bg-white/2.5 hover:border-yellow-400/40 hover:bg-yellow-400/5"
+                      : "border-yellow-500/15 bg-white/[0.025] hover:border-yellow-400/40 hover:bg-yellow-400/5"
                   }`}
                 >
 
@@ -177,6 +179,7 @@ export default function ReforgeMottoPage() {
 
                 </button>
               );
+
             })}
 
           </div>
@@ -206,5 +209,13 @@ export default function ReforgeMottoPage() {
       </div>
 
     </main>
+  );
+}
+
+export default function ReforgeMottoPage() {
+  return (
+    <Suspense fallback={null}>
+      <ReforgeMottoContent />
+    </Suspense>
   );
 }

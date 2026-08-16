@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 const alliances = [
   {
@@ -27,7 +27,7 @@ const alliances = [
   },
 ];
 
-export default function ReforgeAlliancePage() {
+function ReforgeAllianceContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -40,32 +40,26 @@ export default function ReforgeAlliancePage() {
   const [selectedAlliance, setSelectedAlliance] =
     useState("");
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] =
+    useState(false);
+
 
   const handleContinue = () => {
     if (!selectedAlliance) return;
 
-    try {
-      setLoading(true);
+    setLoading(true);
 
-      router.push(
-        `/reforge/identity?role=${encodeURIComponent(
-          selectedRole
-        )}&motto=${encodeURIComponent(
-          selectedMotto
-        )}&alliance=${encodeURIComponent(
-          selectedAlliance
-        )}`
-      );
-    } catch (error) {
-      console.error(
-        "Royal Alliance navigation error:",
-        error
-      );
-
-      setLoading(false);
-    }
+    router.push(
+      `/reforge/identity?role=${encodeURIComponent(
+        selectedRole
+      )}&motto=${encodeURIComponent(
+        selectedMotto
+      )}&alliance=${encodeURIComponent(
+        selectedAlliance
+      )}`
+    );
   };
+
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-black px-5 py-12 text-white">
@@ -74,9 +68,11 @@ export default function ReforgeAlliancePage() {
 
         <div className="relative overflow-hidden rounded-3xl border border-yellow-500/20 bg-[#0c0c0c] p-8 text-center shadow-[0_0_70px_rgba(234,179,8,.12)] sm:p-10">
 
+
           {/* Royal Glow */}
 
           <div className="pointer-events-none absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-yellow-400/10 blur-3xl" />
+
 
           {/* Logo */}
 
@@ -92,6 +88,8 @@ export default function ReforgeAlliancePage() {
 
           </div>
 
+
+
           {/* Heading */}
 
           <div className="relative">
@@ -100,9 +98,11 @@ export default function ReforgeAlliancePage() {
               Royal Creation
             </p>
 
+
             <h1 className="mt-4 text-3xl font-black text-white sm:text-4xl">
               Choose Your Alliance
             </h1>
+
 
             <p className="mt-4 text-sm leading-7 text-gray-400">
               Every citizen may walk with a House
@@ -112,9 +112,12 @@ export default function ReforgeAlliancePage() {
 
           </div>
 
+
+
           {/* Identity Summary */}
 
           <div className="relative mt-6 rounded-2xl border border-yellow-500/10 bg-yellow-400/5 px-4 py-4">
+
 
             <div>
 
@@ -122,11 +125,14 @@ export default function ReforgeAlliancePage() {
                 Royal Role
               </p>
 
+
               <p className="mt-1 font-bold text-yellow-400">
                 {selectedRole || "Your Role"}
               </p>
 
             </div>
+
+
 
             <div className="mt-3 border-t border-yellow-500/10 pt-3">
 
@@ -134,23 +140,32 @@ export default function ReforgeAlliancePage() {
                 Royal Motto
               </p>
 
+
               <p className="mt-1 text-sm font-bold text-white">
                 {selectedMotto || "Your Motto"}
               </p>
 
             </div>
 
+
           </div>
+
+
+
 
           {/* Alliances */}
 
           <div className="relative mt-8 space-y-3 text-left">
 
+
             {alliances.map((alliance) => {
+
               const selected =
                 selectedAlliance === alliance.name;
 
+
               return (
+
                 <button
                   key={alliance.name}
                   type="button"
@@ -167,7 +182,9 @@ export default function ReforgeAlliancePage() {
                   }`}
                 >
 
+
                   <div className="flex items-center justify-between gap-3">
+
 
                     <h2
                       className={`text-lg font-bold ${
@@ -179,23 +196,37 @@ export default function ReforgeAlliancePage() {
                       {alliance.name}
                     </h2>
 
+
+
                     {selected && (
+
                       <span className="text-xs font-bold uppercase tracking-wider text-yellow-400">
                         Selected
                       </span>
+
                     )}
 
+
                   </div>
+
+
 
                   <p className="mt-2 text-sm leading-6 text-gray-500">
                     {alliance.description}
                   </p>
 
+
                 </button>
+
               );
+
             })}
 
+
           </div>
+
+
+
 
           {/* Continue */}
 
@@ -205,12 +236,18 @@ export default function ReforgeAlliancePage() {
             onClick={handleContinue}
             className="relative mt-7 w-full rounded-2xl bg-yellow-400 py-4 text-base font-bold text-black transition hover:scale-[1.02] hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-40"
           >
+
             {loading
               ? "Preparing the Next Step..."
               : `Continue with ${
                   selectedAlliance || "Your Alliance"
                 }`}
+
           </button>
+
+
+
+
 
           {/* Footer */}
 
@@ -219,10 +256,30 @@ export default function ReforgeAlliancePage() {
             Kingdom identity.
           </p>
 
+
+
         </div>
 
       </div>
 
+
     </main>
   );
+}
+
+
+
+
+export default function ReforgeAlliancePage() {
+
+  return (
+
+    <Suspense fallback={null}>
+
+      <ReforgeAllianceContent />
+
+    </Suspense>
+
+  );
+
 }

@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 
-export default function ReforgeAliasPage() {
+function ReforgeAliasContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -23,36 +23,29 @@ export default function ReforgeAliasPage() {
   const [royalAlias, setRoyalAlias] =
     useState("");
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] =
+    useState(false);
 
   const handleContinue = () => {
     if (!royalAlias.trim()) return;
 
-    try {
-      setLoading(true);
+    setLoading(true);
 
-      router.push(
-        `/reforge/voice?role=${encodeURIComponent(
-          selectedRole
-        )}&motto=${encodeURIComponent(
-          selectedMotto
-        )}&alliance=${encodeURIComponent(
-          selectedAlliance
-        )}&kingdom=${encodeURIComponent(
-          kingdomName
-        )}&alias=${encodeURIComponent(
-          royalAlias.trim()
-        )}`
-      );
-    } catch (error) {
-      console.error(
-        "Royal Alias navigation error:",
-        error
-      );
-
-      setLoading(false);
-    }
+    router.push(
+      `/reforge/voice?role=${encodeURIComponent(
+        selectedRole
+      )}&motto=${encodeURIComponent(
+        selectedMotto
+      )}&alliance=${encodeURIComponent(
+        selectedAlliance
+      )}&kingdom=${encodeURIComponent(
+        kingdomName
+      )}&alias=${encodeURIComponent(
+        royalAlias.trim()
+      )}`
+    );
   };
+  
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-black px-5 py-12 text-white">
@@ -224,5 +217,13 @@ export default function ReforgeAliasPage() {
       </div>
 
     </main>
+  );
+}
+
+export default function ReforgeAlliancePage() {
+  return (
+    <Suspense fallback={null}>
+      <ReforgeAliasContent />
+    </Suspense>
   );
 }

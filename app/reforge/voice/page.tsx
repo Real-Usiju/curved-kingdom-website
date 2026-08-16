@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
-export default function ReforgeVoicePage() {
+function ReforgeVoiceContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -60,7 +60,7 @@ export default function ReforgeVoicePage() {
     }
   };
 
-  return (
+    return (
     <main className="flex min-h-screen items-center justify-center bg-black px-5 py-12 text-white">
 
       <div className="w-full max-w-md">
@@ -253,5 +253,13 @@ export default function ReforgeVoicePage() {
       </div>
 
     </main>
+  );
+}
+
+export default function ReforgeVoicePage() {
+  return (
+    <Suspense fallback={null}>
+      <ReforgeVoiceContent />
+    </Suspense>
   );
 }
