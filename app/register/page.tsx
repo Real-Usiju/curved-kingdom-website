@@ -42,11 +42,13 @@ export default function RegisterPage() {
         if (result?.user) {
           router.push("/identity-gate");
         }
-      } catch (error) {
-        console.error("Google redirect error:", error);
+      } catch (error: any) {
+        console.error("GOOGLE REDIRECT ERROR:", error);
 
         setError(
-          "The Kingdom could not complete your entrance. Please try again."
+          error?.code
+            ? `${error.code}: ${error.message}`
+            : "Google authentication failed."
         );
       }
     };
@@ -70,6 +72,7 @@ export default function RegisterPage() {
       /*
        * First try Google popup.
        */
+
       try {
         const result = await signInWithPopup(
           auth,
@@ -81,20 +84,22 @@ export default function RegisterPage() {
         }
 
         return;
-      } catch (popupError: unknown) {
+      } catch (popupError: any) {
         console.warn(
-          "Google popup could not open. Switching to redirect.",
+          "Google popup could not open.",
           popupError
         );
 
         const firebaseError = popupError as {
           code?: string;
+          message?: string;
         };
 
         /*
          * If popup is blocked or closed,
          * use redirect authentication.
          */
+
         if (
           firebaseError.code === "auth/popup-blocked" ||
           firebaseError.code === "auth/popup-closed-by-user" ||
@@ -108,13 +113,20 @@ export default function RegisterPage() {
           return;
         }
 
+        /*
+         * Any other Firebase error should
+         * reach the main catch below.
+         */
+
         throw popupError;
       }
-    } catch (error) {
-      console.error("Google sign-in error:", error);
+    } catch (error: any) {
+      console.error("GOOGLE SIGN-IN ERROR:", error);
 
       setError(
-        "The Kingdom could not complete your entrance. Please try again."
+        error?.code
+          ? `${error.code}: ${error.message}`
+          : "Google authentication failed."
       );
 
       setLoading(false);
@@ -136,7 +148,7 @@ export default function RegisterPage() {
 
           <div className="flex justify-center">
             <Image
-              src="/logo.png"
+              src="/curved-kingdom-logo.png"
               alt="Curved Kingdom"
               width={90}
               height={90}
@@ -179,9 +191,11 @@ export default function RegisterPage() {
           {/* Error */}
 
           {error && (
-            <p className="mt-4 text-center text-sm text-red-400">
-              {error}
-            </p>
+            <div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/10 p-4">
+              <p className="text-center text-sm leading-6 text-red-400">
+                {error}
+              </p>
+            </div>
           )}
 
           {/* Security */}
