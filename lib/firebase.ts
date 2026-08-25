@@ -17,7 +17,7 @@ import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA0k4ZlAHaeCPGRGf1NnapyAzJ5tJF48_E",
-  authDomain: "curved-kingdom-87579.firebaseapp.com",
+  authDomain: "curvedkingdom.com",
   projectId: "curved-kingdom-87579",
   storageBucket: "curved-kingdom-87579.firebasestorage.app",
   messagingSenderId: "912952367169",
