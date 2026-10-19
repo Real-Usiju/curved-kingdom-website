@@ -9,9 +9,7 @@ import Roadmap from "./components/Roadmap";
 import Community from "./components/community";
 import Footer from "./components/Footer";
 import RoyalIntro from "./components/RoyalIntro";
- {/*import RoyalProclamation from "./components/RoyalProclamation";*/}
 import KingdomChronicles from "./components/KingdomChronicles";
-import FoundersHall from "./components/FoundersHall";
 
 export default function Home() {
   const [showIntro, setShowIntro] = useState(true);
@@ -19,12 +17,9 @@ export default function Home() {
   return (
     <>
       {showIntro && (
-        <RoyalIntro
-          onFinish={() => setShowIntro(false)}
-        />
+        <RoyalIntro onFinish={() => setShowIntro(false)} />
       )}
 
-      {/* Google Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -46,15 +41,11 @@ export default function Home() {
 
         <Features />
 
-         {/*<RoyalProclamation />*/}
-
         <Roadmap />
 
         <Community />
 
         <KingdomChronicles />
-
-        <FoundersHall />
 
         <Footer />
       </main>

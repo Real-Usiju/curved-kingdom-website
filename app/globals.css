@@ -1,29 +1,56 @@
 @import "tailwindcss";
 
 :root {
-  /* Curved Kingdom — New Brand Colors */
-  --kingdom-bg: #020617;
-  --kingdom-bg-deep: #01030a;
+  /* Curved Kingdom — Official Brand Palette */
+  --kingdom-bg: #020914;
+  --kingdom-bg-deep: #01050d;
+  --kingdom-bg-soft: #071426;
 
-  --kingdom-blue: #0b5cff;
-  --kingdom-blue-bright: #19bfff;
-  --kingdom-blue-dark: #0636b8;
+  /* Kingdom Blue — Elegant, Deep Brand Blue */
+  --kingdom-blue: #278dbb;
+  --kingdom-blue-bright: #45b8e8;
+  --kingdom-blue-dark: #145577;
+  --kingdom-blue-soft: #a2dff5;
 
-  --kingdom-gold: #f5b82e;
-  --kingdom-gold-bright: #ffd84d;
-  --kingdom-gold-dark: #c98708;
+  /* Royal Gold — Refined, Metallic Gold */
+  --kingdom-gold: #d4af37;
+  --kingdom-gold-bright: #e6c75b;
+  --kingdom-gold-dark: #96751e;
+  --kingdom-gold-soft: #f5e5a7;
 
+  /* Text */
   --kingdom-white: #ffffff;
-  --kingdom-text: #f8fafc;
-  --kingdom-muted: #94a3b8;
+  --kingdom-text: #f1f5fb;
+  --kingdom-muted: #9aaec3;
+  --kingdom-subtle: #6d829a;
 
-  /* Reusable glows */
-  --kingdom-blue-glow: rgba(11, 92, 255, 0.35);
-  --kingdom-gold-glow: rgba(245, 184, 46, 0.3);
+  /* Borders */
+  --kingdom-border: rgba(69, 184, 232, 0.17);
+  --kingdom-border-gold: rgba(212, 175, 55, 0.28);
+
+  /* Ambient Light */
+  --kingdom-blue-glow: rgba(39, 141, 187, 0.19);
+  --kingdom-gold-glow: rgba(212, 175, 55, 0.14);
+
+  /* Reusable Surfaces */
+  --kingdom-surface: rgba(7, 20, 38, 0.86);
+  --kingdom-surface-hover: rgba(12, 31, 52, 0.96);
+
+  /* Consistent Shapes */
+  --kingdom-radius-sm: 12px;
+  --kingdom-radius-md: 20px;
+  --kingdom-radius-lg: 30px;
+
+  /* Consistent Movement */
+  --kingdom-transition: 220ms ease;
 }
 
 html {
   scroll-behavior: smooth;
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+  scrollbar-color: var(--kingdom-blue-dark) var(--kingdom-bg-deep);
+  scrollbar-width: thin;
 }
 
 *,
@@ -35,28 +62,105 @@ html {
 body {
   margin: 0;
   padding: 0;
+  min-height: 100vh;
   background:
     radial-gradient(
-      circle at 50% 0%,
-      rgba(11, 92, 255, 0.12),
+      ellipse at 50% -12%,
+      rgba(39, 141, 187, 0.12),
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse at 100% 42%,
+      rgba(212, 175, 55, 0.035),
       transparent 38%
     ),
-    var(--kingdom-bg);
-  color: var(--kingdom-white);
-  overflow-x: hidden;
+    linear-gradient(
+      180deg,
+      var(--kingdom-bg) 0%,
+      var(--kingdom-bg-deep) 100%
+    );
+  color: var(--kingdom-text);
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  color: var(--kingdom-bg-deep);
+  background: var(--kingdom-gold-bright);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--kingdom-blue-bright);
+  outline-offset: 4px;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 section {
   width: 100%;
-  overflow: hidden;
 }
 
-/* Main content container */
+main {
+  width: 100%;
+  min-width: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Main Content Container */
 
 .kingdom-container {
   width: 100%;
   max-width: 1280px;
-  margin: 0 auto;
+  margin-inline: auto;
   padding-inline: 24px;
 }
 
@@ -66,96 +170,223 @@ section {
   }
 }
 
-/* Universal section container */
+/* Universal Section Container */
 
 .section-container {
   width: 100%;
   max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
 }
 
 @media (min-width: 640px) {
   .section-container {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-inline: 1.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .section-container {
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding-inline: 2rem;
   }
 }
 
-/* Curved Kingdom glass card */
+/* Curved Kingdom Glass Card */
 
 .kingdom-card {
-  border-radius: 30px;
-
-  border: 1px solid rgba(11, 92, 255, 0.2);
-
+  position: relative;
+  border: 1px solid var(--kingdom-border);
+  border-radius: var(--kingdom-radius-lg);
   background:
     linear-gradient(
-      135deg,
-      rgba(11, 92, 255, 0.08),
-      rgba(255, 255, 255, 0.035)
+      145deg,
+      rgba(39, 141, 187, 0.065),
+      rgba(7, 20, 38, 0.78) 52%,
+      rgba(212, 175, 55, 0.025)
     );
-
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-
   transition:
-    border-color 0.3s ease,
-    box-shadow 0.3s ease,
-    transform 0.3s ease;
+    border-color var(--kingdom-transition),
+    box-shadow var(--kingdom-transition),
+    background var(--kingdom-transition),
+    transform var(--kingdom-transition);
 }
 
-.kingdom-card:hover {
-  border-color: rgba(245, 184, 46, 0.5);
-
-  box-shadow:
-    0 0 30px rgba(11, 92, 255, 0.12),
-    0 0 45px rgba(245, 184, 46, 0.06);
-
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .kingdom-card:hover {
+    border-color: var(--kingdom-border-gold);
+    background: var(--kingdom-surface-hover);
+    box-shadow:
+      0 12px 35px rgba(0, 0, 0, 0.24),
+      0 0 25px rgba(39, 141, 187, 0.06);
+    transform: translateY(-2px);
+  }
 }
 
-/* Brand glow utilities */
+/* Kingdom Blue Glow */
 
 .kingdom-blue-glow {
   box-shadow:
-    0 0 20px var(--kingdom-blue-glow),
-    0 0 50px rgba(11, 92, 255, 0.12);
+    0 0 18px var(--kingdom-blue-glow),
+    0 0 42px rgba(39, 141, 187, 0.06);
 }
+
+/* Royal Gold Glow */
 
 .kingdom-gold-glow {
   box-shadow:
-    0 0 20px var(--kingdom-gold-glow),
-    0 0 50px rgba(245, 184, 46, 0.1);
+    0 0 18px var(--kingdom-gold-glow),
+    0 0 38px rgba(212, 175, 55, 0.045);
 }
 
-/* Brand text */
+/* Brand Gradient Text */
 
 .kingdom-gradient-text {
   background: linear-gradient(
-    90deg,
-    var(--kingdom-blue-bright),
-    var(--kingdom-blue),
-    var(--kingdom-gold)
+    105deg,
+    var(--kingdom-blue-bright) 0%,
+    var(--kingdom-blue) 48%,
+    var(--kingdom-gold-bright) 100%
   );
-
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Images */
+/* Royal Gold Text */
 
-img {
-  display: block;
-  max-width: 100%;
+.kingdom-gold-text {
+  color: var(--kingdom-gold);
+}
+
+/* Kingdom Blue Text */
+
+.kingdom-blue-text {
+  color: var(--kingdom-blue-bright);
+}
+
+/* Reusable Kingdom Blue Button */
+
+.kingdom-button-blue {
+  border: 1px solid rgba(69, 184, 232, 0.45);
+  border-radius: var(--kingdom-radius-sm);
+  background: linear-gradient(
+    135deg,
+    var(--kingdom-blue-dark),
+    var(--kingdom-blue)
+  );
+  color: var(--kingdom-white);
+  font-weight: 600;
+  transition:
+    border-color var(--kingdom-transition),
+    box-shadow var(--kingdom-transition),
+    transform var(--kingdom-transition),
+    background var(--kingdom-transition);
+}
+
+/* Reusable Royal Gold Button */
+
+.kingdom-button-gold {
+  border: 1px solid rgba(212, 175, 55, 0.65);
+  border-radius: var(--kingdom-radius-sm);
+  background: linear-gradient(
+    135deg,
+    var(--kingdom-gold-dark),
+    var(--kingdom-gold),
+    var(--kingdom-gold-bright)
+  );
+  color: #090d13;
+  font-weight: 700;
+  transition:
+    border-color var(--kingdom-transition),
+    box-shadow var(--kingdom-transition),
+    transform var(--kingdom-transition),
+    background var(--kingdom-transition);
+}
+
+@media (hover: hover) {
+  .kingdom-button-blue:hover {
+    border-color: var(--kingdom-blue-bright);
+    box-shadow: 0 0 22px var(--kingdom-blue-glow);
+    transform: translateY(-1px);
+  }
+
+  .kingdom-button-gold:hover {
+    border-color: var(--kingdom-gold-bright);
+    box-shadow: 0 0 22px var(--kingdom-gold-glow);
+    transform: translateY(-1px);
+  }
+}
+
+.kingdom-button-blue:disabled,
+.kingdom-button-gold:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Subtle Kingdom Divider */
+
+.kingdom-divider {
+  width: 100%;
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(39, 141, 187, 0.4),
+    rgba(212, 175, 55, 0.3),
+    transparent
+  );
+}
+
+/* Consistent Form Fields */
+
+.kingdom-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 15px;
+  border: 1px solid var(--kingdom-border);
+  border-radius: var(--kingdom-radius-sm);
+  background: rgba(1, 5, 13, 0.72);
+  color: var(--kingdom-text);
+  transition:
+    border-color var(--kingdom-transition),
+    box-shadow var(--kingdom-transition),
+    background var(--kingdom-transition);
+}
+
+.kingdom-input::placeholder {
+  color: var(--kingdom-subtle);
+}
+
+.kingdom-input:focus {
+  border-color: var(--kingdom-blue-bright);
+  background: rgba(7, 20, 38, 0.94);
+  box-shadow: 0 0 0 3px rgba(39, 141, 187, 0.12);
+  outline: none;
+}
+
+.kingdom-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Reduced Motion Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

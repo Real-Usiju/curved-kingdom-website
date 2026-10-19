@@ -1,304 +1,305 @@
 "use client";
 
-import Image from "next/image";
+import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { onAuthStateChanged } from "firebase/auth";
-import { useEffect, useState } from "react";
-import { GiCrossedSwords } from "react-icons/gi";
-import ProtectedApp from "../components/ProtectedApp";
-import RoyalNavigation from "../components/RoyalNavigation";
-import { Trophy } from "lucide-react";
-import { FiUsers } from "react-icons/fi";
-
-import { auth } from "../../lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import {
-  CitizenProfile,
-  getCitizenProfile,
-} from "../services/user";
+  Crown,
+  ShieldCheck,
+  Zap,
+  Users,
+  Trophy,
+  RefreshCw,
+  UserRound,
+} from "lucide-react";
 
-const royalStandards: Record<string, string> = {
-  "Early Citizen": "/royal-standards/early-citizen.jpg",
-  Guardian: "/royal-standards/guardian.jpg",
-  "Kingdom Lord": "/royal-standards/kingdom-lord.jpg",
-  "Celestial Empire":
-    "/royal-standards/celestial-empire.jpg",
+import { auth, db } from "../../lib/firebase";
+import { RoyalLoader } from "../components/RoyalLoader";
+import RoyalNavigation from "../components/RoyalNavigation";
+
+type CitizenProfile = {
+  uid?: string;
+  fullName?: string;
+  email?: string;
+  photoURL?: string;
+  kingdomName?: string;
+  alias?: string;
+  royalRank?: string;
+  motto?: string;
+  alliance?: string;
+  biography?: string;
+  profileImage?: string;
+  bannerImage?: string;
+  power?: number;
+  citizens?: number;
+  glory?: number;
+  verified?: boolean;
 };
 
 export default function PalacePage() {
-  const [citizen, setCitizen] =
-    useState<CitizenProfile | null>(null);
+  const router = useRouter();
 
+  const [profile, setProfile] = useState<CitizenProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [imageFailed, setImageFailed] = useState(false);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(
-      auth,
-      async (currentUser) => {
-        if (!currentUser) {
-          setCitizen(null);
-          setLoading(false);
+  const loadProfile = useCallback(
+    async (uid: string) => {
+      setLoading(true);
+      setError("");
+      setImageFailed(false);
+
+      try {
+        const profileSnapshot = await getDoc(doc(db, "users", uid));
+        const user = auth.currentUser;
+
+        if (!profileSnapshot.exists()) {
+          router.replace("/reforge/identity");
           return;
         }
 
-        try {
-          const profile = await getCitizenProfile(
-            currentUser.uid
-          );
+        const savedProfile = profileSnapshot.data() as CitizenProfile;
 
-          setCitizen(profile);
-        } catch (error) {
-          console.error(
-            "Palace profile error:",
-            error
-          );
-        } finally {
-          setLoading(false);
-        }
+        setProfile({
+          ...savedProfile,
+          uid,
+          profileImage:
+            savedProfile.profileImage ||
+            user?.photoURL ||
+            savedProfile.photoURL ||
+            "",
+          photoURL: user?.photoURL || savedProfile.photoURL || "",
+          fullName: savedProfile.fullName || user?.displayName || "",
+          email: savedProfile.email || user?.email || "",
+        });
+      } catch (err) {
+        console.error("Unable to load Palace:", err);
+        setError("Your Palace could not be opened. Please try again.");
+      } finally {
+        setLoading(false);
       }
-    );
+    },
+    [router],
+  );
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        router.replace("/login");
+        return;
+      }
+
+      void loadProfile(user.uid);
+    });
 
     return () => unsubscribe();
-  }, []);
+  }, [loadProfile, router]);
 
-  /* -----------------------------
-     LOADING
-  ----------------------------- */
+  const displayName =
+    profile?.kingdomName ||
+    profile?.fullName ||
+    profile?.alias ||
+    "Unnamed Citizen";
+
+  const royalRole = profile?.royalRank || "Citizen";
+  const portrait = profile?.profileImage || profile?.photoURL || "";
+  const banner = profile?.bannerImage || "";
 
   if (loading) {
     return (
-      <ProtectedApp>
-        <main className="min-h-screen bg-black text-white">
-          <div className="flex min-h-screen items-center justify-center">
-            <p className="text-sm text-yellow-400">
-              Entering the Palace...
-            </p>
-          </div>
-
-          <RoyalNavigation />
-        </main>
-      </ProtectedApp>
+      <main className="flex min-h-screen items-center justify-center bg-[#020914] px-6 pb-24 text-center text-white">
+        <div className="flex flex-col items-center">
+          <RoyalLoader size={64} />
+          <p className="mt-4 text-sm text-white/60">
+            Opening your Palace...
+          </p>
+        </div>
+        <RoyalNavigation />
+      </main>
     );
   }
 
-  /* -----------------------------
-     NO PROFILE
-  ----------------------------- */
-
-  if (!citizen) {
+  if (error) {
     return (
-      <ProtectedApp>
-        <main className="min-h-screen bg-black pb-24 text-white">
-          <div className="flex min-h-[80vh] items-center justify-center px-6">
-            <p className="text-center text-sm text-gray-500">
-              Your Royal Identity could not be found.
-            </p>
-          </div>
+      <main className="flex min-h-screen flex-col items-center justify-center bg-[#020914] px-6 pb-28 text-center text-white">
+        <ShieldCheck className="mb-4 h-10 w-10 text-[#35E8FF]" />
+        <p className="max-w-sm text-sm text-white/70">{error}</p>
 
-          <RoyalNavigation />
-        </main>
-      </ProtectedApp>
-    );
-  }
-
-  /* -----------------------------
-     ROYAL STANDARD
-  ----------------------------- */
-
-  const royalStandard =
-    royalStandards[citizen.royalRank] ??
-    "/royal-standards/early-citizen.jpg";
-
-  /* -----------------------------
-     IDENTITY
-  ----------------------------- */
-
-  const role =
-    citizen.royalRank || "Early Citizen";
-
-  const kingdomName =
-    citizen.kingdomName ||
-    citizen.fullName ||
-    "Citizen";
-
-  const profilePhoto =
-    citizen.profileImage ||
-    citizen.photoURL ||
-    "/logo.png";
-
-  /* -----------------------------
-     PALACE
-  ----------------------------- */
-
-  return (
-    <ProtectedApp>
-      <main className="min-h-screen bg-black pb-24 text-white">
-
-        {/* =================================
-            KINGDOM BANNER
-        ================================= */}
-
-        <section className="relative min-h-[350px] w-full overflow-hidden">
-          {/* Royal Standard */}
-
-          <Image
-            src={royalStandard}
-            alt="Kingdom Banner"
-            fill
-            priority
-            className="object-cover"
-          />
-
-          {/* Dark Royal Overlay */}
-
-          <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/55 to-black/95" />
-
-          {/* Banner Content */}
-
-          <div className="relative z-10 flex min-h-[350px] flex-col px-5 pb-5 pt-4">
-           
-            {/* ==========================
-                IDENTITY
-            ========================== */}
-
-            <div className="mt-auto">
-{/* Profile Photo */}
-
-<div className="mb-3">
-  <div className="h-20 w-20 overflow-hidden rounded-full border-2 border-yellow-400/70 bg-black shadow-[0_0_25px_rgba(234,179,8,.25)]">
-    <img
-      src={profilePhoto}
-      alt={kingdomName}
-      width={80}
-      height={80}
-      className="h-full w-full object-cover"
-    />
-  </div>
-</div>
-
-{/* Royal Role */}
-
-<p className="text-xs font-bold uppercase tracking-[3px] text-yellow-400">
-  {role}
-</p>
-
-{/* Kingdom Name */}
-
-<h1 className="mt-0.5 text-[28px] font-black tracking-tight text-white">
-  {kingdomName}
-</h1>
-
-{/* Alias */}
-
-{citizen.alias && (
-  <p className="mt-1 text-base font-medium italic text-gray-300">
-    {citizen.alias}
-  </p>
-)}
-
-{/* Motto */}
-
-{citizen.motto && (
-  <p className="mt-2 max-w-xs text-sm leading-5 text-gray-300">
-    {citizen.motto}
-  </p>
-)}
-              
-              {/* ==========================
-                  POWER / CITIZENS / GLORY
-              ========================== */}
-
-              <div className="mt-7 grid grid-cols-3 border-t border-yellow-400/20 pt-5">
-
-                {/* POWER */}
-
-                <div className="flex flex-col items-center text-center">
-
-                  <GiCrossedSwords
-                    size={22}
-                    className="text-yellow-400"
-                  />
-
-                  <p className="mt-1 text-lg font-black text-white">
-                    {citizen.power}
-                  </p>
-
-                  <p className="mt-0.5 text-[8px] font-semibold uppercase tracking-[1.5px] text-gray-500">
-                    Power
-                  </p>
-
-                </div>
-
-                {/* CITIZENS */}
-
-                <div className="flex flex-col items-center border-l border-yellow-400/10 text-center">
-
-                  <FiUsers
-                    size={18}
-                    strokeWidth={1.8}
-                    className="text-yellow-400"
-                  />
-
-                  <p className="mt-1 text-lg font-black text-white">
-                    {citizen.citizens}
-                  </p>
-
-                  <p className="mt-0.5 text-[8px] font-semibold uppercase tracking-[1.5px] text-gray-500">
-                    Citizens
-                  </p>
-
-                </div>
-
-                {/* GLORY */}
-
-                <div className="flex flex-col items-center border-l border-yellow-400/10 text-center">
-
-                  <Trophy
-                    size={18}
-                    strokeWidth={1.8}
-                    className="text-yellow-400"
-                  />
-
-                  <p className="mt-1 text-lg font-black text-white">
-                    {citizen.glory}
-                  </p>
-
-                  <p className="mt-0.5 text-[8px] font-semibold uppercase tracking-[1.5px] text-gray-500">
-                    Glory
-                  </p>
-
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* =================================
-            PALACE CONTENT
-            WE WILL BUILD THIS NEXT
-        ================================= */}
-
-        <section className="mx-auto max-w-md px-6 py-8">
-
-          <div className="rounded-2xl border border-yellow-500/10 bg-white/[0.025] p-6">
-
-            <p className="text-xs font-semibold uppercase tracking-[3px] text-yellow-400">
-              The Palace
-            </p>
-
-            <p className="mt-3 text-sm leading-7 text-gray-500">
-              Your Royal Identity continues below.
-            </p>
-
-          </div>
-
-        </section>
-
-        {/* Bottom Navigation */}
+        <button
+          type="button"
+          onClick={() => {
+            const user = auth.currentUser;
+            if (user) void loadProfile(user.uid);
+          }}
+          className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-[#35E8FF] transition-colors hover:text-[#FFD700]"
+        >
+          <RefreshCw className="h-4 w-4" />
+          Try Again
+        </button>
 
         <RoyalNavigation />
-
       </main>
-    </ProtectedApp>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <main className="min-h-screen bg-[#020914] pb-28 text-white">
+        <div className="mx-auto max-w-3xl px-5 py-20 text-center">
+          <Crown className="mx-auto h-10 w-10 text-[#FFD700]" />
+
+          <h1 className="mt-5 text-2xl font-bold">Your Palace Awaits</h1>
+
+          <p className="mt-3 text-sm text-white/60">
+            Your Royal Identity is not available yet. Forge your identity to
+            establish your Palace.
+          </p>
+
+          <button
+            type="button"
+            onClick={() => router.push("/reforge/identity")}
+            className="mt-7 min-h-11 font-semibold text-[#FFD700] transition-colors hover:text-[#35E8FF]"
+          >
+            Forge Your Royal Identity
+          </button>
+        </div>
+
+        <RoyalNavigation />
+      </main>
+    );
+  }
+
+  return (
+    <main className="min-h-screen overflow-x-hidden bg-[#020914] pb-28 text-white">
+      <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6">
+        <header className="mb-7">
+          <h1 className="text-3xl font-bold tracking-tight text-[#FFD700] sm:text-4xl">
+            Palace
+          </h1>
+
+          <p className="mt-2 text-sm text-white/60">
+            Your identity, power and legacy.
+          </p>
+        </header>
+
+        <section className="animate-in fade-in duration-500">
+          {banner && (
+            <div className="h-28 overflow-hidden sm:h-44">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={banner}
+                alt="Palace banner"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          )}
+
+          <div className="mt-5 flex items-center gap-4 sm:gap-5">
+            <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-white/5 sm:h-28 sm:w-28">
+              {portrait && !imageFailed ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  key={portrait}
+                  src={portrait}
+                  alt={`${displayName} portrait`}
+                  referrerPolicy="no-referrer"
+                  onError={() => setImageFailed(true)}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <UserRound className="h-9 w-9 text-[#35E8FF]" />
+              )}
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="break-words text-xl font-bold sm:text-3xl">
+                  {displayName}
+                </h2>
+
+                {profile.verified && (
+                  <ShieldCheck
+                    className="h-5 w-5 shrink-0 text-[#35E8FF]"
+                    aria-label="Verified Royal Identity"
+                  />
+                )}
+              </div>
+
+              <p className="mt-2 text-sm font-medium text-[#FFD700]">
+                <Crown className="mr-2 inline h-4 w-4" />
+                {royalRole}
+              </p>
+
+              {profile.motto && (
+                <p className="mt-2 whitespace-pre-wrap break-words text-sm italic leading-6 text-white/70">
+                  {profile.motto}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {profile.biography && (
+            <p className="mt-5 whitespace-pre-wrap break-words text-sm leading-6 text-white/70">
+              {profile.biography}
+            </p>
+          )}
+
+          {profile.alliance && (
+            <p className="mt-3 text-sm text-white/60">
+              Alliance:{" "}
+              <span className="text-[#35E8FF]">{profile.alliance}</span>
+            </p>
+          )}
+        </section>
+
+        <section
+          aria-label="Palace achievements and statistics"
+          className="mt-9 grid grid-cols-3 gap-1 sm:gap-6"
+        >
+          <div className="min-w-0 py-2">
+            <div className="flex items-center gap-1.5 sm:gap-3">
+              <Zap className="h-4 w-4 shrink-0 text-[#35E8FF] sm:h-5 sm:w-5" />
+              <h3 className="text-xs font-semibold text-white/80 sm:text-sm">
+                Power
+              </h3>
+            </div>
+
+            <p className="mt-3 break-words text-xl font-bold text-[#35E8FF] sm:text-3xl">
+              {(profile.power ?? 0).toLocaleString()}
+            </p>
+          </div>
+
+          <div className="min-w-0 py-2">
+            <div className="flex items-center gap-1.5 sm:gap-3">
+              <Users className="h-4 w-4 shrink-0 text-[#35E8FF] sm:h-5 sm:w-5" />
+              <h3 className="text-xs font-semibold text-white/80 sm:text-sm">
+                Citizens
+              </h3>
+            </div>
+
+            <p className="mt-3 break-words text-xl font-bold text-[#35E8FF] sm:text-3xl">
+              {(profile.citizens ?? 0).toLocaleString()}
+            </p>
+          </div>
+
+          <div className="min-w-0 py-2">
+            <div className="flex items-center gap-1.5 sm:gap-3">
+              <Trophy className="h-4 w-4 shrink-0 text-[#FFD700] sm:h-5 sm:w-5" />
+              <h3 className="text-xs font-semibold text-white/80 sm:text-sm">
+                Glory
+              </h3>
+            </div>
+
+            <p className="mt-3 break-words text-xl font-bold text-[#FFD700] sm:text-3xl">
+              {(profile.glory ?? 0).toLocaleString()}
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <RoyalNavigation />
+    </main>
   );
 }

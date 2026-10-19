@@ -40,21 +40,14 @@ export const metadata: Metadata = {
     "digital legacy",
   ],
 
-  authors: [
-    {
-      name: "Curved Kingdom",
-    },
-  ],
-
+  authors: [{ name: "Curved Kingdom" }],
   creator: "Curved Kingdom",
+  publisher: "Curved Kingdom",
+  category: "Technology",
 
   alternates: {
     canonical: "https://curvedkingdom.com",
   },
-
-  publisher: "Curved Kingdom",
-
-  category: "Technology",
 
   robots: {
     index: true,
@@ -76,7 +69,6 @@ export const metadata: Metadata = {
     title: "Curved Kingdom | Digital Civilization",
     description:
       "Join Curved Kingdom and become part of a new digital civilization where identity, purpose, innovation, community, and legacy come together.",
-
     images: [
       {
         url: "/curved-kingdom-logo.png",
@@ -92,7 +84,6 @@ export const metadata: Metadata = {
     title: "Curved Kingdom | Digital Civilization",
     description:
       "Join Curved Kingdom and become part of a new digital civilization.",
-
     images: ["/curved-kingdom-logo.png"],
   },
 
@@ -118,10 +109,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
-        <AuthProvider>
-          {children}
-        </AuthProvider>
-
+        <AuthProvider>{children}</AuthProvider>
         <Analytics />
         <SpeedInsights />
       </body>

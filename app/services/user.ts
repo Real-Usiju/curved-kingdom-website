@@ -1,3 +1,4 @@
+
 import {
   doc,
   getDoc,
@@ -16,7 +17,6 @@ import {
   db,
   storage,
 } from "../../lib/firebase";
-
 
 export type CitizenProfile = {
   uid: string;
@@ -44,13 +44,12 @@ export type CitizenProfile = {
   updatedAt?: unknown;
 };
 
-
 /**
- * --------------------------------------------------
- * CREATE CITIZEN PROFILE
- * --------------------------------------------------
+ * CREATE OR UPDATE CITIZEN PROFILE
  *
- * Creates the citizen's first Kingdom profile.
+ * Preserves existing Power, Citizens, Glory,
+ * verification status, and creation date when
+ * the citizen already has a profile.
  */
 export async function createCitizenProfile(
   uid: string,
@@ -64,11 +63,51 @@ export async function createCitizenProfile(
   alliance: string,
   biography: string
 ) {
-  const citizenRef = doc(
-    db,
-    "users",
-    uid
-  );
+  const citizenRef = doc(db, "users", uid);
+  const existingSnapshot = await getDoc(citizenRef);
+
+  if (existingSnapshot.exists()) {
+    const existing = existingSnapshot.data();
+
+    const updates: Partial<CitizenProfile> = {
+      uid,
+      fullName,
+      email,
+      kingdomName,
+      alias,
+      royalRank,
+      motto,
+      alliance,
+      biography,
+    };
+
+    if (!existing.profileImage && photoURL) {
+      updates.profileImage = photoURL;
+    }
+
+    if (!existing.photoURL && photoURL) {
+      updates.photoURL = photoURL;
+    }
+
+    if (!existing.bannerImage) {
+      updates.bannerImage =
+        "/royal-standards/kingdom-lord.jpg";
+    }
+
+    await setDoc(
+      citizenRef,
+      {
+        ...updates,
+        updatedAt: serverTimestamp(),
+      },
+      { merge: true }
+    );
+
+    return {
+      ...existing,
+      ...updates,
+    };
+  }
 
   const citizenProfile: CitizenProfile = {
     uid,
@@ -84,20 +123,10 @@ export async function createCitizenProfile(
     alliance,
     biography,
 
-    /*
-     * Google portrait is used initially.
-     *
-     * If the citizen later chooses a custom
-     * Royal Portrait, this value will be
-     * replaced with the Firebase Storage URL.
-     */
     profileImage: photoURL,
 
-    /*
-     * Early Citizen royal standard.
-     */
     bannerImage:
-      "/royal-standards/early-citizen.jpg",
+      "/royal-standards/kingdom-lord.jpg",
 
     power: 0,
     citizens: 0,
@@ -111,31 +140,20 @@ export async function createCitizenProfile(
   await setDoc(
     citizenRef,
     citizenProfile,
-    {
-      merge: true,
-    }
+    { merge: true }
   );
 
   return citizenProfile;
 }
 
-
 /**
- * --------------------------------------------------
  * GET CITIZEN PROFILE
- * --------------------------------------------------
  */
 export async function getCitizenProfile(
   uid: string
 ): Promise<CitizenProfile | null> {
-  const citizenRef = doc(
-    db,
-    "users",
-    uid
-  );
-
-  const snapshot =
-    await getDoc(citizenRef);
+  const citizenRef = doc(db, "users", uid);
+  const snapshot = await getDoc(citizenRef);
 
   if (!snapshot.exists()) {
     return null;
@@ -144,110 +162,52 @@ export async function getCitizenProfile(
   return snapshot.data() as CitizenProfile;
 }
 
-
 /**
- * --------------------------------------------------
  * UPDATE CITIZEN PROFILE
- * --------------------------------------------------
- *
- * Used by:
- *
- * Capital
- * → Profile
- * → Reforge My Kingdom
  */
 export async function updateCitizenProfile(
   uid: string,
   data: Partial<CitizenProfile>
 ) {
-  const citizenRef = doc(
-    db,
-    "users",
-    uid
-  );
+  const citizenRef = doc(db, "users", uid);
 
-  await updateDoc(
-    citizenRef,
-    {
-      ...data,
-      updatedAt: serverTimestamp(),
-    }
-  );
+  await updateDoc(citizenRef, {
+    ...data,
+    updatedAt: serverTimestamp(),
+  });
 }
 
-
 /**
- * --------------------------------------------------
  * UPLOAD ROYAL PORTRAIT
- * --------------------------------------------------
  *
- * Uploads a custom portrait to:
- *
- * Firebase Storage
- * users/{uid}/royal-portrait/
- *
- * Then returns the permanent download URL.
+ * Uploads the portrait to Firebase Storage
+ * and synchronizes profileImage and photoURL.
  */
 export async function uploadRoyalPortrait(
   uid: string,
   file: File
 ): Promise<string> {
-
-  /*
-   * Create a unique filename.
-   *
-   * This prevents browser/cache issues when
-   * the citizen replaces their portrait.
-   */
   const extension =
-    file.name.split(".").pop() ||
-    "jpg";
+    file.name.split(".").pop() || "jpg";
 
   const fileName =
     `royal-portrait-${Date.now()}.${extension}`;
 
-  /*
-   * Firebase Storage location.
-   */
   const storageRef = ref(
     storage,
     `users/${uid}/royal-portrait/${fileName}`
   );
 
-  /*
-   * Upload the actual image.
-   */
-  await uploadBytes(
-    storageRef,
-    file
-  );
+  await uploadBytes(storageRef, file);
 
-  /*
-   * Get the permanent Firebase URL.
-   */
   const downloadURL =
-    await getDownloadURL(
-      storageRef
-    );
+    await getDownloadURL(storageRef);
 
-  /*
-   * Save the URL into the citizen's
-   * Firestore profile.
-   */
-  await updateCitizenProfile(
-    uid,
-    {
-      profileImage:
-        downloadURL,
-
-      /*
-       * Keep photoURL synchronized with
-       * the chosen Royal Portrait.
-       */
-      photoURL:
-        downloadURL,
-    }
-  );
+  await updateCitizenProfile(uid, {
+    profileImage: downloadURL,
+    photoURL: downloadURL,
+  });
 
   return downloadURL;
 }
+
