@@ -80,13 +80,9 @@ export default function RegisterPage() {
     return "We could not complete your journey. Please try again.";
   };
 
-  const continueToCorrectDestination = (isNewUser: boolean) => {
-    if (isNewUser) {
-      router.replace("/reforge/identity");
-    } else {
-      router.replace("/kingdom");
-    }
-  };
+ const continueToCorrectDestination = (_isNewUser: boolean) => {
+  router.replace("/welcome");
+};
 
   useEffect(() => {
     let active = true;

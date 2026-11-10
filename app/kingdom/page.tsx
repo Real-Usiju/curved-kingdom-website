@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { BellRing, CalendarClock } from "lucide-react";
+import {
+  BellRing,
+  CirclePlay,
+  Crown,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 
 import { auth, db } from "../../lib/firebase";
 import { RoyalLoader } from "../components/RoyalLoader";
@@ -34,7 +40,8 @@ function getRoyalTitle(role?: string) {
 
   if (normalized === "king") return "King";
   if (normalized === "queen") return "Queen";
-
+  if (normalized === "prince") return "Prince";
+  if (normalized === "princess") return "Princess";
   return "";
 }
 
@@ -45,9 +52,7 @@ export default function KingdomPage() {
   const [user, setUser] = useState<User | null>(null);
   const [citizen, setCitizen] = useState<CitizenProfile | null>(null);
   const [greeting, setGreeting] = useState("Good day");
-  const [showGreeting, setShowGreeting] = useState(false);
-  const [showTitle, setShowTitle] = useState(false);
-  const [showName, setShowName] = useState(false);
+  const [welcomeStage, setWelcomeStage] = useState(0);
   const [profileImageFailed, setProfileImageFailed] = useState(false);
   const [logoFailed, setLogoFailed] = useState(false);
 
@@ -69,6 +74,8 @@ export default function KingdomPage() {
 
         if (profileSnapshot.exists()) {
           setCitizen(profileSnapshot.data() as CitizenProfile);
+        } else {
+          router.replace("/reforge/identity");
         }
       } catch (error) {
         console.error("Unable to load citizen identity:", error);
@@ -83,14 +90,17 @@ export default function KingdomPage() {
   useEffect(() => {
     if (checkingAuth) return;
 
-    const greetingTimer = window.setTimeout(() => setShowGreeting(true), 250);
-    const titleTimer = window.setTimeout(() => setShowTitle(true), 850);
-    const nameTimer = window.setTimeout(() => setShowName(true), 1300);
+    const greetingInterval = window.setInterval(() => {
+      setGreeting(getGreeting());
+    }, 60_000);
+
+    const animationInterval = window.setInterval(() => {
+      setWelcomeStage((stage) => (stage + 1) % 4);
+    }, 3000);
 
     return () => {
-      window.clearTimeout(greetingTimer);
-      window.clearTimeout(titleTimer);
-      window.clearTimeout(nameTimer);
+      window.clearInterval(greetingInterval);
+      window.clearInterval(animationInterval);
     };
   }, [checkingAuth]);
 
@@ -106,9 +116,28 @@ export default function KingdomPage() {
   const profilePhoto =
     citizen?.profileImage || citizen?.photoURL || user?.photoURL;
 
+  const welcomeMessages = [
+    {
+      heading: greeting,
+      detail: `${royalTitle ? `${royalTitle} ` : ""}${displayName}`,
+    },
+    {
+      heading: "Welcome to your Kingdom",
+      detail: `${royalTitle ? `${royalTitle} ` : ""}${displayName}`,
+    },
+    {
+      heading: "Your Kingdom. Your Legacy.",
+      detail: "Welcome home",
+    },
+    {
+      heading: "The Kingdom welcomes you",
+      detail: `${royalTitle ? `${royalTitle} ` : ""}${displayName}`,
+    },
+  ];
+
   if (checkingAuth) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#020914] px-6 text-center text-white">
+      <main className="flex h-[100dvh] items-center justify-center overflow-hidden bg-[#020914] px-6 text-center text-white">
         <div className="flex flex-col items-center">
           <RoyalLoader size={72} />
           <p className="mt-5 text-sm text-white/60">
@@ -120,193 +149,242 @@ export default function KingdomPage() {
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#020914] pb-24 text-white">
+    <main className="relative flex h-[100dvh] min-h-0 flex-col overflow-hidden bg-[#020914] text-white">
       <style jsx>{`
-        @keyframes kingdomFadeIn {
+        @keyframes royalGreetingIn {
           from {
             opacity: 0;
-            transform: translateY(8px);
+            transform: translateY(6px);
+            filter: blur(2px);
           }
+
           to {
             opacity: 1;
             transform: translateY(0);
+            filter: blur(0);
           }
         }
 
-        .kingdom-fade-in {
-          animation: kingdomFadeIn 700ms ease-out both;
+        @keyframes royalGreetingOut {
+          from {
+            opacity: 1;
+            transform: translateY(0);
+          }
+
+          to {
+            opacity: 0;
+            transform: translateY(-5px);
+          }
+        }
+
+        @keyframes royalGlow {
+          0%,
+          100% {
+            opacity: 0.35;
+            transform: scale(0.94);
+          }
+
+          50% {
+            opacity: 0.8;
+            transform: scale(1.06);
+          }
+        }
+
+        .royal-greeting {
+          animation: royalGreetingIn 550ms ease-out both;
+        }
+
+        .royal-glow {
+          animation: royalGlow 4s ease-in-out infinite;
+        }
+
+        .royal-video-stage {
+          background:
+            radial-gradient(
+              ellipse at 50% 35%,
+              rgba(53, 232, 255, 0.065),
+              transparent 48%
+            ),
+            radial-gradient(
+              ellipse at 85% 90%,
+              rgba(255, 215, 0, 0.045),
+              transparent 45%
+            ),
+            linear-gradient(160deg, #061426 0%, #020914 72%);
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .kingdom-fade-in {
+          .royal-greeting,
+          .royal-glow {
             animation: none;
           }
         }
       `}</style>
 
-      <div className="mx-auto w-full max-w-3xl">
-        <header className="flex items-center justify-between gap-3 px-4 py-4 sm:px-6">
-          <button
-            type="button"
-            onClick={() => router.push("/kingdom")}
-            aria-label="Curved Kingdom home"
-            className="flex min-w-0 items-center gap-2 text-left"
-          >
-            {!logoFailed ? (
-              <img
-                src="/curved-kingdom-logo.png"
-                alt="Curved Kingdom logo"
-                className="h-10 w-10 shrink-0 object-contain"
-                onError={() => setLogoFailed(true)}
-              />
-            ) : (
-              <span
-                aria-hidden="true"
-                className="flex h-10 w-10 shrink-0 items-center justify-center text-[#35E8FF]"
-              >
-                <span className="text-2xl font-light">CK</span>
-              </span>
-            )}
-
-            <span className="flex min-w-0 flex-col leading-none">
-              <span className="text-base font-bold tracking-wide text-[#FFD700] sm:text-lg">
-                CURVED
-              </span>
-              <span className="mt-1 text-xs font-semibold tracking-[0.2em] text-[#35E8FF] sm:text-sm">
-                KINGDOM
-              </span>
+      <header className="relative z-40 flex h-[68px] shrink-0 items-center justify-between gap-2 border-b border-white/[0.07] bg-[#020914]/95 px-3 backdrop-blur-xl sm:h-[76px] sm:px-6">
+        <button
+          type="button"
+          onClick={() => router.push("/kingdom")}
+          aria-label="Curved Kingdom home"
+          className="flex min-w-0 shrink-0 items-center gap-2 text-left"
+        >
+          {!logoFailed ? (
+            <img
+              src="/curved-kingdom-logo.png"
+              alt="Curved Kingdom logo"
+              className="h-9 w-9 shrink-0 object-contain sm:h-11 sm:w-11"
+              onError={() => setLogoFailed(true)}
+            />
+          ) : (
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center text-[#35E8FF] sm:h-11 sm:w-11">
+              <Crown size={24} strokeWidth={1.4} />
             </span>
-          </button>
+          )}
 
-          <button
-            type="button"
-            onClick={() => router.push("/palace")}
-            aria-label="Open your Palace"
-            className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 transition-colors hover:border-[#35E8FF]"
+          <span className="flex min-w-0 flex-col leading-none">
+            <span className="text-sm font-bold tracking-wide text-[#FFD700] sm:text-lg">
+              CURVED
+            </span>
+            <span className="mt-1 text-[10px] font-semibold tracking-[0.17em] text-[#35E8FF] sm:text-sm sm:tracking-[0.2em]">
+              KINGDOM
+            </span>
+          </span>
+        </button>
+
+        <div
+          key={welcomeStage}
+          aria-live="polite"
+          className="absolute left-1/2 flex w-[40%] -translate-x-1/2 flex-col items-center justify-center overflow-hidden text-center sm:w-[46%]"
+        >
+          <p className="royal-greeting max-w-full truncate text-[10px] font-medium tracking-wide text-[#35E8FF] sm:text-xs">
+            {welcomeMessages[welcomeStage].heading}
+          </p>
+
+          <p
+            className="royal-greeting mt-1 max-w-full truncate text-xs font-bold text-white sm:text-sm"
+            style={{ animationDelay: "100ms" }}
           >
-            {profilePhoto && !profileImageFailed ? (
-              <img
-                src={profilePhoto}
-                alt="Your profile"
-                referrerPolicy="no-referrer"
-                className="h-full w-full object-cover"
-                onError={() => setProfileImageFailed(true)}
-              />
-            ) : (
-              <span className="text-sm font-semibold text-[#35E8FF]">
-                {displayName.charAt(0).toUpperCase()}
-              </span>
-            )}
-          </button>
-        </header>
+            {welcomeMessages[welcomeStage].detail}
+          </p>
+        </div>
 
-        <section
-          aria-label="Welcome to your Kingdom"
-          className="px-5 pb-7 pt-7 sm:px-6 sm:pb-10 sm:pt-10"
+        <button
+          type="button"
+          onClick={() => router.push("/palace")}
+          aria-label="Open your Palace"
+          className="relative z-10 flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 transition hover:border-[#FFD700]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD700] sm:h-11 sm:w-11"
         >
-          <div className="min-h-[108px]">
-            <p
-              className={`text-sm font-medium tracking-wide text-[#35E8FF] ${
-                showGreeting ? "kingdom-fade-in" : "opacity-0"
-              }`}
-            >
-              {greeting}
-            </p>
+          {profilePhoto && !profileImageFailed ? (
+            <img
+              src={profilePhoto}
+              alt="Your profile"
+              referrerPolicy="no-referrer"
+              className="h-full w-full object-cover"
+              onError={() => setProfileImageFailed(true)}
+            />
+          ) : (
+            <span className="text-sm font-semibold text-[#35E8FF]">
+              {displayName.charAt(0).toUpperCase()}
+            </span>
+          )}
+        </button>
+      </header>
 
-            <h1 className="mt-2 flex flex-wrap items-baseline gap-x-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-              {royalTitle && (
-                <span
-                  className={`text-[#FFD700] ${
-                    showTitle ? "kingdom-fade-in" : "opacity-0"
-                  }`}
-                >
-                  {royalTitle}
-                </span>
-              )}
-
-              <span
-                className={`text-white ${
-                  showName ? "kingdom-fade-in" : "opacity-0"
-                }`}
-              >
-                {displayName}
-              </span>
-            </h1>
+      <section className="flex min-h-0 flex-1 flex-col px-2 pt-2 pb-[calc(68px+8px+env(safe-area-inset-bottom))] sm:px-4 sm:pt-4 sm:pb-[calc(68px+16px+env(safe-area-inset-bottom))]">
+        <div className="royal-video-stage relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-white/[0.09]">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 overflow-hidden"
+          >
+            <div className="royal-glow absolute left-1/2 top-[35%] h-64 w-64 -translate-x-1/2 rounded-full bg-[#35E8FF]/[0.07] blur-[90px]" />
+            <div className="absolute -bottom-24 -right-20 h-64 w-64 rounded-full bg-[#FFD700]/[0.04] blur-[85px]" />
           </div>
-        </section>
 
-        <section
-          aria-labelledby="kingdom-coming-soon-title"
-          className="px-4 sm:px-6"
-        >
-          <div className="relative isolate flex min-h-[min(680px,calc(100svh-230px))] flex-col items-center justify-center overflow-hidden border border-white/[0.08] bg-[#061426] px-6 py-12 text-center sm:min-h-[580px] sm:rounded-2xl sm:px-10">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-            >
-              <div className="absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-[#35E8FF]/[0.08] blur-[90px]" />
-              <div className="absolute -bottom-24 -right-16 h-64 w-64 rounded-full bg-[#FFD700]/[0.06] blur-[90px]" />
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#061426_78%)]" />
+          <div className="relative z-10 flex shrink-0 items-center justify-between gap-3 border-b border-white/[0.07] px-3 py-3 sm:px-6 sm:py-4">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[#35E8FF]/25 bg-[#35E8FF]/[0.06] sm:h-11 sm:w-11">
+                {!logoFailed ? (
+                  <img
+                    src="/curved-kingdom-logo.png"
+                    alt="Curved Kingdom Official"
+                    className="h-full w-full object-contain p-1"
+                    onError={() => setLogoFailed(true)}
+                  />
+                ) : (
+                  <Crown
+                    size={22}
+                    className="text-[#FFD700]"
+                    aria-hidden="true"
+                  />
+                )}
+              </div>
+
+              <div className="min-w-0">
+                <h1 className="truncate text-sm font-bold sm:text-base">
+                  Curved Kingdom Official
+                </h1>
+                <p className="mt-1 flex items-center gap-1.5 text-[10px] text-white/45 sm:text-xs">
+                  <ShieldCheck
+                    size={13}
+                    className="shrink-0 text-[#35E8FF]"
+                    aria-hidden="true"
+                  />
+                  Official Kingdom channel
+                </p>
+              </div>
             </div>
 
-            <div className="flex h-20 w-20 items-center justify-center rounded-3xl border border-[#35E8FF]/20 bg-[#35E8FF]/[0.06]">
-              {!logoFailed ? (
-                <img
-                  src="/curved-kingdom-logo.png"
-                  alt="Curved Kingdom emblem"
-                  className="h-14 w-14 object-contain"
-                  onError={() => setLogoFailed(true)}
-                />
-              ) : (
-                <BellRing
-                  aria-hidden="true"
-                  size={34}
-                  strokeWidth={1.4}
-                  className="text-[#35E8FF]"
-                />
-              )}
+            <span className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#35E8FF]/20 bg-[#35E8FF]/[0.05] px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider text-[#35E8FF]">
+              <Sparkles size={12} aria-hidden="true" />
+              Official
+            </span>
+          </div>
+
+          <div className="relative z-10 flex min-h-0 flex-1 flex-col items-center justify-center overflow-y-auto overscroll-contain px-5 py-5 text-center sm:px-10">
+            <div className="flex h-[68px] w-[68px] shrink-0 items-center justify-center rounded-3xl border border-[#35E8FF]/20 bg-[#35E8FF]/[0.05] sm:h-[76px] sm:w-[76px]">
+              <CirclePlay
+                size={42}
+                strokeWidth={1.2}
+                className="text-[#35E8FF]"
+                aria-hidden="true"
+              />
             </div>
 
-            <p className="mt-8 text-[10px] font-bold uppercase tracking-[0.3em] text-[#35E8FF] sm:text-xs">
-              A New Chapter Is Approaching
+            <p className="mt-5 text-[9px] font-bold uppercase tracking-[0.3em] text-[#35E8FF] sm:mt-7 sm:text-[10px]">
+              Your official video feed
             </p>
 
-            <h2
-              id="kingdom-coming-soon-title"
-              className="mt-5 max-w-md text-3xl font-black leading-tight tracking-tight sm:text-5xl"
-            >
-              <span className="bg-gradient-to-r from-[#FFD700] via-[#F5E6A8] to-[#35E8FF] bg-clip-text text-transparent">
-                The Kingdom Is Coming Soon
-              </span>
+            <h2 className="mt-3 max-w-sm text-2xl font-bold leading-tight sm:mt-4 sm:text-4xl">
+              The Kingdom speaks{" "}
+              <span className="text-[#FFD700]">through its stories.</span>
             </h2>
 
-            <p className="mt-5 max-w-md text-sm leading-7 text-white/65 sm:text-base">
-              We are preparing something worthy of your Kingdom. A new home
-              for royal proclamations, citizen participation, and the Glory
-              your community will build together.
+            <p className="mt-3 max-w-md text-sm leading-6 text-white/50 sm:mt-4 sm:leading-7">
+              Official videos and their captions will appear here when
+              published by Curved Kingdom Official.
             </p>
 
-            <div className="mt-8 inline-flex items-center gap-3 rounded-full border border-[#FFD700]/20 bg-[#FFD700]/[0.05] px-5 py-3">
-              <CalendarClock
-                aria-hidden="true"
-                size={18}
+            <div className="mt-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/[0.09] bg-black/20 px-3 py-2.5 sm:mt-7 sm:px-4">
+              <BellRing
+                size={14}
                 className="shrink-0 text-[#FFD700]"
+                aria-hidden="true"
               />
-              <span className="text-sm font-semibold text-[#E6DDAF]">
-                Official launch announcement coming soon
+              <span className="text-left text-[10px] text-white/55 sm:text-[11px]">
+                The first official video is yet to be published.
               </span>
-            </div>
-
-            <div className="mt-10 flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#35E8FF]" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/40">
-                Your Kingdom. Your Power. Your Legacy.
-              </span>
-              <span className="h-1.5 w-1.5 rounded-full bg-[#FFD700]" />
             </div>
           </div>
-        </section>
-      </div>
+
+          <div className="relative z-10 flex shrink-0 items-center justify-center gap-2 border-t border-white/[0.07] px-3 py-3 sm:px-4 sm:py-4">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#35E8FF]" />
+            <p className="text-center text-[9px] font-semibold uppercase tracking-[0.16em] text-white/35 sm:tracking-[0.2em]">
+              Your Kingdom. Your Power. Your Legacy.
+            </p>
+            <span className="h-1.5 w-1.5 rounded-full bg-[#FFD700]" />
+          </div>
+        </div>
+      </section>
 
       <RoyalNavigation />
     </main>

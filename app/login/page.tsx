@@ -115,19 +115,18 @@ export default function LoginPage() {
     return "We could not complete your return to the Kingdom. Please try again.";
   };
 
-  const processGoogleResult = async (
-    result: Awaited<ReturnType<typeof signInWithPopup>>
-  ) => {
-    const additionalInfo = getAdditionalUserInfo(result);
+ const processGoogleResult = async (
+  result: Awaited<ReturnType<typeof signInWithPopup>>
+) => {
+  const additionalInfo = getAdditionalUserInfo(result);
 
-    if (additionalInfo?.isNewUser) {
-      await handleUnknownAccount();
-      return;
-    }
+  if (additionalInfo?.isNewUser) {
+    await handleUnknownAccount();
+    return;
+  }
 
-    router.replace("/kingdom");
-  };
-
+  router.replace("/welcome");
+};
   useEffect(() => {
     let active = true;
 
@@ -152,7 +151,7 @@ export default function LoginPage() {
           return;
         }
 
-        router.replace("/kingdom");
+        router.replace("/welcome");
       } catch (error: unknown) {
         console.error("Google login redirect failed:", error);
 
